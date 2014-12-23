@@ -2,7 +2,13 @@
 # Cookbook Name:: cloudorchestra
 # Recipe:: default
 #
-# Copyright 2014, YOUR_COMPANY_NAME
+# Copyright 2014, Abram Hindle
 #
-# All rights reserved - Do Not Redistribute
+# Apache 2.0 license
 #
+
+include_recipe "apache2"
+
+apache_site "default" do
+  enable true
+end

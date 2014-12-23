@@ -1,0 +1,30 @@
+* Setting up Docker
+  - I don't want to use vagrant.
+** SSH copied from
+   http://docs.docker.com/examples/running_ssh_service/
+   put into docker/base/Dockerfile
+* Following this old tutorial..
+  - 
+      http://www.opinionatedprogrammer.com/2011/06/chef-solo-tutorial-managing-a-single-server-with-chef/
+  - ran into some real docker bugs
+  - made an ubuntu user with no-password sudo
+  - can't get gem to install chef..
+* Tasks...
+  - Csound installer
+  - Supercollider installer
+  - Chuck installer
+  - Puredata installer
+  - jack installer
+  - 
+* Following this tutorial
+  http://gettingstartedwithchef.com/first-steps-with-chef.html
+  $ mkdir .chef
+  $ echo "cookbook_path [ '/home/hindle1/projects/chef-cloud/chef-repo/cookbooks' ]" > .chef/knife.rb
+  $ knife cookbook create cloudorchestra
+  $ cd cookbook
+  $ knife cookbook site download apache2
+  $ knife cookbook site download iptables
+  $ knife cookbook site download apt
+  $ knife cookbook site download pacman
+  $ knife cookbook site download logrotate
+  $ for file in *.gz; do tar zxvf $file; done
