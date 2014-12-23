@@ -1,1 +1,1 @@
-cookbook_path [ '/home/hindle1/projects/chef-cloud/chef-repo/cookbooks' ]
+cookbook_path [ '/home/ubuntu/chef-cloud/chef-repo/cookbooks' ]
