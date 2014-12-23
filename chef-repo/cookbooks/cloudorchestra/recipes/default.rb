@@ -14,7 +14,7 @@ apache_site "default" do
 end
 
 
-["csound","supercollider","jack"].each |pkg|
+["csound","supercollider","jack"].each do |pkg|
     package pkg do
         action :install
     end
