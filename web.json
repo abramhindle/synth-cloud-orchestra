@@ -1,0 +1,5 @@
+{
+  "run_list": [ "recipe[apt]", "recipe[cloudorchestra]"
+      , "service[apache2] action reload"
+   ]
+}
