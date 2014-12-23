@@ -12,3 +12,10 @@ include_recipe "apache2"
 apache_site "default" do
   enable true
 end
+
+
+["csound","supercollider","jack"].each |pkg|
+    package pkg do
+        action :install
+    end
+end
