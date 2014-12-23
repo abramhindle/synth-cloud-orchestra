@@ -30,6 +30,7 @@ ADD id_rsa.pub /tmp/
 RUN chmod 644 /tmp/id_rsa.pub && chown ubuntu.ubuntu /tmp/id_rsa.pub
 RUN mkdir -p /home/ubuntu/.ssh/ && chown ubuntu.ubuntu /home/ubuntu/.ssh/ && chmod 700 /home/ubuntu/.ssh && cp /tmp/id_rsa.pub /home/ubuntu/.ssh/authorized_keys && chmod 600 /home/ubuntu/.ssh/authorized_keys && chown ubuntu.ubuntu /home/ubuntu/.ssh/authorized_keys
 
+RUN apt-get install -y git chef chef-zero 
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
