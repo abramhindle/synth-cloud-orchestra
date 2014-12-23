@@ -13,7 +13,7 @@ if ! test -f "$chef_binary"; then
     #    --force-yes -fuy dist-upgrade &&
     # Install Ruby and Chef
     apt install -y ruby1.9.1 ruby1.9.1-dev make &&
-    sudo gem1.9.1 install --no-rdoc --no-ri chef --version 0.10.0
+    sudo gem1.9.1 install --no-rdoc --no-ri chef 
 fi &&
 
 "$chef_binary" -c solo.rb -j solo.json
