@@ -3,8 +3,8 @@ require_relative "jack"
 class Csound
   attr_accessor :main, :inputs, :outputs, :path, :module, :name
 
-  def gen_name()
-    "csound" + @module
+  def gen_name(name=nil)
+    "csound" + @module + ( name ? name : "")
   end
 
   def initialize( synthdef )
@@ -12,7 +12,7 @@ class Csound
     @inputs = synthdef["inputs"] || 1
     @outputs = synthdef["outputs"] || 1
     @module = synthdef["module"] || @main.split(/\./)[0]
-    @name = synthdef["name"] || self.gen_name()
+    @name = self.gen_name( synthdef["name"] )
     @path = synthdef["path"] || "."
   end
 

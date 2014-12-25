@@ -12,10 +12,11 @@ class Synthrunner
     end
   end
 
-  def make_synth_from_file( filename )
+  def make_synth_from_file( filename, name=nil )
     desc = JSON.load(open(filename).read)
     path = Pathname.new(filename).dirname
     desc["path"] ||= path 
+    desc["name"] ||= name
     self.make_synth( desc )
   end
 

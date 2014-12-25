@@ -86,6 +86,7 @@ class SynthBlock
   def initialize( name, hash )
     @name = name
     @module = hash["module"]
+    hash["name"] = name
     # if we have a real manifest hash
     hash["path"] = "#{Dir.pwd}/#{@module}"
     synthrunner = Synthrunner.new
@@ -93,7 +94,7 @@ class SynthBlock
       @runner = synthrunner.make_synth(hash)
     else
       # otherwise default filename
-      @runner = synthrunner.make_synth_from_file("#{@module}/manifest.json")
+      @runner = synthrunner.make_synth_from_file("#{@module}/manifest.json", name=@name)
     end
   end
   

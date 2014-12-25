@@ -6,10 +6,23 @@
         },
         "fm":{
             "module":"fm"
+        },
+        "lp2":{
+            "module":"lp"
+        },
+        "lp3":{
+            "module":"lp"
+        },
+        "lp4":{
+            "module":"lp"
         }
     },
     "connections":[
         {"source":"fm", "sink":"lp"},
-        {"source":"lp", "sink":"DAC"}
+        {"source":"lp", "sink":"lp2"},
+        {"source":"lp2", "sink":"lp3"},
+        {"source":"lp3", "sink":"DAC"},
+        {"source":"lp4", "sink":"DAC"},
+        {"source":"ADC", "sink":"lp4"}
     ]
 }
