@@ -35,6 +35,13 @@ class Jack
   def connect( source, sink )
         system('jack_connect', source, sink)   
   end
+  def get_dac
+    return ["system:playback_1", "system:playback_2"]
+  end
+  def get_adc
+    return ["system:capture_1", "system:capture_2"]
+  end
+
 end
 
 if $0 == __FILE__

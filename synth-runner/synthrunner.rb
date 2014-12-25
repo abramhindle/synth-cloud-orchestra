@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "json"
+require "pathname"
 require_relative "csound"
 
 class Synthrunner
