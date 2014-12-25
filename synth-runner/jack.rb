@@ -32,6 +32,9 @@ class Jack
       end
     end
   end
+  def connect( source, sink )
+        system('jack_connect', source, sink)   
+  end
 end
 
 if $0 == __FILE__

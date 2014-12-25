@@ -1,0 +1,15 @@
+{
+    "type":"synthdef",
+    "blocks":{
+        "lp":{
+            "module":"lp"
+        },
+        "fm":{
+            "module":"fm"
+        }
+    },
+    "connections":[
+        {"source":"fm", "sink":"lp"},
+        {"source":"lp", "sink":"DAC"}
+    ]
+}

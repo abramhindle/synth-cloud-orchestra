@@ -13,6 +13,8 @@ class Synthrunner
 
   def make_synth_from_file( filename )
     desc = JSON.load(open(filename).read)
+    path = Pathname.new(filename).dirname
+    desc["path"] ||= path 
     self.make_synth( desc )
   end
 
