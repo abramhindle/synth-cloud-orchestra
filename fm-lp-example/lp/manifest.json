@@ -1,0 +1,5 @@
+{
+    "synth":"csound",
+    "main":"lp.csd",
+    "module":"lp"
+}
