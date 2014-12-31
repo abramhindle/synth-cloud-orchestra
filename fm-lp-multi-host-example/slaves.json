@@ -1,0 +1,19 @@
+[
+    {
+        "name":"VagrantHost",
+        "host":"172.17.42.2",
+        "username":"vagrant",
+        "cores":1,
+        "masterjack":0,
+        "memory":512
+    },
+    {
+        "name":"DockerHost",
+        "host":"172.17.0.19",
+        "username":"ubuntu",
+        "cores":1,
+        "masterjack":0,
+        "comment":"masterjack is optional, it indicates if jack is already running",
+        "memory":512
+    }
+]
