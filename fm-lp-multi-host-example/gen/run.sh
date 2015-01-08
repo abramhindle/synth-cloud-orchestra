@@ -5,6 +5,7 @@ bash -x sync.sh
 bash -x start-jacks.sh
 bash -x start-connectors.sh
 bash -x start-synths.sh
+bash -x disconnect-everything.sh
 bash -x connect-synths.sh
 echo "Synthesizer should be up and running. Press <enter> to terminate"
 read
