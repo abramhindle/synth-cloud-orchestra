@@ -53,7 +53,7 @@ if $0 == __FILE__
   jack = Jack.new()
   if (ARGV.length > 0)
     ARGV.each do |arg|
-      jack.disconnect(arg)
+      jack.disconnect_match(arg)
     end
   else
     connections = jack.connections()
