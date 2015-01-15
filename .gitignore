@@ -12,3 +12,5 @@ id_rsa
 id_rsa.pub
 vagrant/.vagrant/
 vagrant/jacktrip
+test-synth
+baks/

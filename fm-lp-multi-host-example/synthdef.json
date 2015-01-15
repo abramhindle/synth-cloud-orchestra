@@ -25,15 +25,15 @@
             "module":"fm"
         },
         "lp2":{
-            "module":"lp"
+            "module":"lp",
             "host":"bach"
         },
         "lp3":{
-            "host":"bach"
+            "host":"bach",
             "module":"lp"
         },
         "lp4":{
-            "host":"xenakis"
+            "host":"xenakis",
             "module":"lp"
         }
     },

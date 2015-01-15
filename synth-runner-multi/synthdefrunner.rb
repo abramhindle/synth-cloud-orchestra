@@ -2,6 +2,7 @@
 require "json"
 require_relative "synthdef"
 require_relative "synthrunner"
+require_relative "slaves"
 
 
 class SynthDefRunner
@@ -24,6 +25,7 @@ class SynthDefRunner
 
 end
 
+
 if $0 == __FILE__
   slaves = Slaves.make_slaves_from_file("slaves.json")
   synthrunner = SynthDefRunner.new(slaves)
@@ -31,5 +33,5 @@ if $0 == __FILE__
   puts synth.to_json
   # in the gen folder make all the shell scripts we need
   synth.generate()
-  synth.run()
 end
+

@@ -14,7 +14,7 @@ end
 class Slaves
   attr_accessor :slaves
   def initialize(list_of_hashes)
-    @slaves = hashes.map {|x| Slave.new(x) } 
+    @slaves = list_of_hashes.map {|x| Slave.new(x) } 
   end
   def self.make_slaves_from_file(filename)
     desc = JSON.load(open(filename).read)

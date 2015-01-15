@@ -17,7 +17,7 @@ class SynthDef
   def parse_hosts( hashhosts )
     hosts = {}
     hashhosts.keys.each do |key|
-      hosts[key] = SynthHost.new(key,hashblocks[key])
+      hosts[key] = SynthHost.new(key,hashhosts[key])
     end
     hosts
   end
@@ -106,10 +106,10 @@ class SynthBlock
     hash["path"] = "#{Dir.pwd}/#{@module}"
     synthrunner = Synthrunner.new
     if (hash["main"])
-      @runner = synthrunner.make_synth(hash)
+      @runner = synthrunner.make_synth(hash, name=@name)
     else
       # otherwise default filename
-      @runner = synthrunner.make_synth_from_file("#{@module}/manifest.json", name=@name)
+      @runner = synthrunner.make_from_module(@module, name=@name)
     end
   end
   
@@ -154,5 +154,13 @@ end
 class Done < Promise
   def join
     1
+  end
+end
+
+class SynthHost
+  attr_accessor :alias, :meta, :slave
+  def initialize(hostalias,hash)
+    @alias = hostalias
+    @meta = hash
   end
 end
