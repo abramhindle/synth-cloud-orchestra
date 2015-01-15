@@ -30,7 +30,8 @@ if $0 == __FILE__
   slaves = Slaves.make_slaves_from_file("slaves.json")
   synthrunner = SynthDefRunner.new(slaves)
   synth = synthrunner.make_synthdef_from_file("synthdef.json")
-  puts synth.to_json
+  require 'oj'
+  puts Oj::dump synth, :indent => 2
   # in the gen folder make all the shell scripts we need
   synth.generate()
 end

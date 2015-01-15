@@ -46,8 +46,9 @@ class Synthrunner
 end
 
 if $0 == __FILE__
+  require 'oj'
   synthrunner = Synthrunner.new()
   synth = synthrunner.make_synth_from_file("manifest.json")
-  puts synth.to_json
+  puts Oj::dump synth, :indent => 2
   synth.run()
 end

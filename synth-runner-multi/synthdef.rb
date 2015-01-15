@@ -59,6 +59,10 @@ class SynthDef
     end
   end
 
+  def generate
+    raise "Undone"
+  end
+
 end
 
 class SynthConnection
@@ -106,7 +110,7 @@ class SynthBlock
     hash["path"] = "#{Dir.pwd}/#{@module}"
     synthrunner = Synthrunner.new
     if (hash["main"])
-      @runner = synthrunner.make_synth(hash, name=@name)
+      @runner = synthrunner.make_synth(hash)
     else
       # otherwise default filename
       @runner = synthrunner.make_from_module(@module, name=@name)
