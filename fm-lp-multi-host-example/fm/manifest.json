@@ -1,0 +1,5 @@
+{
+    "synth":"csound",
+    "main":"fm.csd",
+    "module":"fm"
+}

@@ -1,0 +1,8 @@
+# Bug-dedup base
+FROM ubuntussh:14.04
+
+MAINTAINER Abram Hindle <hindle1@ualberta.ca>
+
+ENV LANG "en_US.UTF-8"
+
+ENV LOGNAME docker

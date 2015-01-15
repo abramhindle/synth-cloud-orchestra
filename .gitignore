@@ -3,3 +3,12 @@ tmp/
 *.swp
 *.swo
 *.wav
+bk
+chef-repo
+\#*\#
+bk/
+.\#*
+id_rsa
+id_rsa.pub
+vagrant/.vagrant/
+vagrant/jacktrip
