@@ -52,7 +52,7 @@ class SynthDefOptimizer
   end
 
   def slaves
-    @sd.slaves.slaves
+    @sd.slaves
   end
 
   def assign_hosts_to_slaves
@@ -74,7 +74,7 @@ class SynthDefOptimizer
   def optimize
     # this will mutate the synthdef
     # assign synths to hosts
-    slaves = @sd.slaves.slaves
+    slaves = self.slaves
     slaves.length >= @sd.hosts.length or raise "Not enough slaves given definition! Too many hosts! Too few slaves!"
     cores_needed = @sd.blocks.length
     cores = slaves.map {|x| x.cores}.inject(:+)

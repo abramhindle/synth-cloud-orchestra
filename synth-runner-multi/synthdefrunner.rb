@@ -25,16 +25,23 @@ class SynthDefRunner
 
 end
 
+def json_dump_to_file(obj,filename)
+  require 'oj'
+  str = Oj::dump obj, :indent => 2
+  puts str
+  f = File.new(filename,"w")
+  f.write( str )
+  f.close
+end
 
 if $0 == __FILE__
-  slaves = Slaves.make_slaves_from_file("slaves.json")
+  slaves = Slave.make_slaves_from_file("slaves.json")
   synthrunner = SynthDefRunner.new(slaves)
   synth = synthrunner.make_synthdef_from_file("synthdef.json")
-  require 'oj'
-  puts Oj::dump synth, :indent => 2
+  json_dump_to_file(synth,"pass1.json")
   # in the gen folder make all the shell scripts we need
   synth.optimize()
-  puts Oj::dump synth, :indent => 2
+  json_dump_to_file(synth,"pass2.json")
   synth.generate()
 end
 

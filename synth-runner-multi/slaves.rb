@@ -9,16 +9,12 @@ class Slave
     @memory = hash["memory"] || 512
     @masterjack = hash["masterjack"] || 0
   end
-end
-
-class Slaves
-  attr_accessor :slaves
-  def initialize(list_of_hashes)
-    @slaves = list_of_hashes.map {|x| Slave.new(x) } 
+  def self.make_slaves_from_hashes(list_of_hashes)
+    return list_of_hashes.map {|x| Slave.new(x) }
   end
   def self.make_slaves_from_file(filename)
     desc = JSON.load(open(filename).read)
-    Slaves.new( desc )
+    return Slave.make_slaves_from_hashes( desc )
   end
 end
 
