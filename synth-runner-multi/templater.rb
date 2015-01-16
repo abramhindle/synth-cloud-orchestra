@@ -5,7 +5,9 @@ class Templater
   attr_accessor :localconnections, :connections, :hosts, :syncdir, :instrument, :module, :command, :syncdir, :synthdef
 
   def synths_of(host)
-    raise "Not done"
+    return @synthdef.blocks.select do |key,block|
+      block.host.alias == host.alias
+    end
   end
 
   def initialize(synthdef)
