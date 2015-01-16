@@ -1,17 +1,18 @@
 require_relative "synthrunner"
+require_relative "synthdefoptimizer"
 
 class SynthDef
-  attr_accessor :blocks, :connections
+  attr_accessor :blocks, :connections, :hosts, :slaves, :locals, :remotes
 
-  def initialize(hash)
-    @slaves = self.load_slaves()
+  def initialize(hash, slaves)
+    @slaves = self.load_slaves(slaves)
     @hosts = self.parse_hosts(hash["hosts"])
     @blocks = self.parse_blocks(hash["blocks"])
     @connections = self.parse_connections(hash["connections"])
   end
 
-  def load_slaves()
-    
+  def load_slaves(slaves)
+    return slaves
   end
 
   def parse_hosts( hashhosts )
@@ -26,7 +27,13 @@ class SynthDef
   def parse_blocks( hashblocks )
     blocks = {}
     hashblocks.keys.each do |key|
-      blocks[key] = SynthBlock.new(key,hashblocks[key])
+      h = hashblocks[key]
+      if h["host"]
+        if @hosts[h["host"]]
+          h["host"] = @hosts[h["host"]]
+        end
+      end
+      blocks[key] = SynthBlock.new(key,h)
     end
     blocks
   end
@@ -35,7 +42,7 @@ class SynthDef
     connections = []
     return hashconnections.collect do |conn|
       SynthConnection.new(conn)
-    end    
+    end
   end
 
   def run()
@@ -59,6 +66,10 @@ class SynthDef
     end
   end
 
+  def optimize
+    optimizer = SynthDefOptimizer.new(self)
+    optimizer.optimize()
+  end
   def generate
     raise "Undone"
   end
@@ -101,10 +112,11 @@ class SynthConnection
 end
   
 class SynthBlock
-  attr_accessor :name, :module, :runner
+  attr_accessor :name, :module, :runner, :host
   def initialize( name, hash )
     @name = name
     @module = hash["module"]
+    @host = hash["host"]
     hash["name"] = name
     # if we have a real manifest hash
     hash["path"] = "#{Dir.pwd}/#{@module}"
