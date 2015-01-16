@@ -2,13 +2,14 @@ require_relative "synthrunner"
 require_relative "synthdefoptimizer"
 
 class SynthDef
-  attr_accessor :blocks, :connections, :hosts, :slaves, :locals, :remotes
+  attr_accessor :blocks, :connections, :hosts, :slaves, :locals, :remotes, :name
 
   def initialize(hash, slaves)
     @slaves = self.load_slaves(slaves)
     @hosts = self.parse_hosts(hash["hosts"])
     @blocks = self.parse_blocks(hash["blocks"])
     @connections = self.parse_connections(hash["connections"])
+    @name = hash["name"] || Pathname.new(".").realpath.dirname.basename.to_s
   end
 
   def load_slaves(slaves)
@@ -69,9 +70,6 @@ class SynthDef
   def optimize
     optimizer = SynthDefOptimizer.new(self)
     optimizer.optimize()
-  end
-  def generate
-    raise "Undone"
   end
 
 end

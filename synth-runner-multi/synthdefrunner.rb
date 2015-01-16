@@ -20,6 +20,8 @@ class SynthDefRunner
 
   def make_synthdef_from_file( filename )
     desc = JSON.load(open(filename).read)
+    dflname = Pathname.new(filename).realpath.dirname.basename.to_s
+    desc["name"] ||= dflname
     self.make_synthdef( desc )
   end
 

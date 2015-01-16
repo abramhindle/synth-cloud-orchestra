@@ -2,7 +2,15 @@ require 'erb'
 
 class Templater
   include ERB::Util
-  attr_accessor :localconnections, :connections, :hosts, :syncdir, :instrument, :instrumentdir, :module, :command
+  attr_accessor :localconnections, :connections, :hosts, :syncdir, :instrument, :module, :command, :syncdir
+
+  def initialize(synthdef)
+    @localconnections = synthdef.locals
+    @connections = synthdef.remotes
+    @hosts = synthdef.slaves
+    @instrument = synthdef.name
+    @syncdir = || Pathname.new("..").realpath.dirname.basename
+  end
 
   def get_binding
     binding()
@@ -28,7 +36,14 @@ class Templater
   end
 
   def render_everything()
-    Dir.glob("../gen.erb/**/*").collect {|x| x }.select {|y| File.file? y }
+    files = Dir.glob("../gen.erb/**/*").collect {|x| x }.select {|y| File.file? y }
+    Dir.mkdir("./gen")
+    # now gen the erbs
+    files.each do |file|
+      outfile = file.sub("../gen.erb/","gen/")
+      warn(outfile)
+      self.render_file_to_file(file,outfile)
+    end
   end
 
 end
