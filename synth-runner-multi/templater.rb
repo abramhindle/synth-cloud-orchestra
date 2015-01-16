@@ -2,14 +2,19 @@ require 'erb'
 
 class Templater
   include ERB::Util
-  attr_accessor :localconnections, :connections, :hosts, :syncdir, :instrument, :module, :command, :syncdir
+  attr_accessor :localconnections, :connections, :hosts, :syncdir, :instrument, :module, :command, :syncdir, :synthdef
+
+  def synths_of(host)
+    raise "Not done"
+  end
 
   def initialize(synthdef)
+    @synthdef = synthdef
     @localconnections = synthdef.locals
     @connections = synthdef.remotes
     @hosts = synthdef.slaves
     @instrument = synthdef.name
-    @syncdir = || Pathname.new("..").realpath.dirname.basename
+    @syncdir = Pathname.new("..").realpath.dirname.basename
   end
 
   def get_binding
@@ -31,7 +36,7 @@ class Templater
 
   def save(data, file)
     File.open(file, "w+") do |f|
-      f.write(render)
+      f.write(data)
     end
   end
 

@@ -1,5 +1,6 @@
 require_relative "synthrunner"
 require_relative "synthdefoptimizer"
+require_relative "templater"
 
 class SynthDef
   attr_accessor :blocks, :connections, :hosts, :slaves, :locals, :remotes, :name
@@ -70,6 +71,11 @@ class SynthDef
   def optimize
     optimizer = SynthDefOptimizer.new(self)
     optimizer.optimize()
+  end
+
+  def generate
+    templater = Templater.new(self)
+    templater.render_everything
   end
 
 end
