@@ -13,6 +13,10 @@ class Templater
     return blocks.values
   end
 
+  def synth_of(name)
+    return @synthdef.blocks[name]
+  end
+
   def initialize(synthdef)
     @synthdef = synthdef
     @localconnections = synthdef.locals

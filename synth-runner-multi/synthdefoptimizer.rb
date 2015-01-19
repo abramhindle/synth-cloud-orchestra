@@ -92,6 +92,7 @@ class SynthDefOptimizer
 
     # once all the hosts are assigned we have to make local connections
     @sd.locals = self.extract_local_connections
+    puts "SD LOCAL #{@sd.locals}"
     # once all the hosts are assigned we have to make remote connections
     @sd.remotes = self.extract_remote_connections
   end
