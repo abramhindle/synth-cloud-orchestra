@@ -5,4 +5,6 @@ cd .. && \
 cp -r fm-lp-multi-host-example test-synth && \
 cd test-synth && \
 (rm -rf gen || echo Fine) && \
-ruby ../synth-runner-multi/synthdefrunner.rb
+( ruby ../synth-runner-multi/synthdefrunner.rb || echo FAILURE ) && \
+ diff ../fm-lp-multi-host-example/gen/start-synths.sh gen/start-synths.sh
+

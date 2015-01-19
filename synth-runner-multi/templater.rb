@@ -5,9 +5,12 @@ class Templater
   attr_accessor :localconnections, :connections, :hosts, :syncdir, :instrument, :module, :command, :syncdir, :synthdef
 
   def synths_of(host)
-    return @synthdef.blocks.select do |key,block|
+    puts "synths_of: #{host.alias}"
+    blocks = @synthdef.blocks.select do |key,block|
       block.host.alias == host.alias
     end
+    puts blocks.keys
+    return blocks.values
   end
 
   def initialize(synthdef)
@@ -16,7 +19,8 @@ class Templater
     @connections = synthdef.remotes
     @hosts = synthdef.slaves
     @instrument = synthdef.name
-    @syncdir = Pathname.new("..").realpath.dirname.basename
+    @syncdir = "cloudorchestra" # + Pathname.new(".").realpath.basename.to_s
+    puts @syncdir
   end
 
   def get_binding

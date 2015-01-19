@@ -68,6 +68,7 @@ class SynthDefOptimizer
     mapping.each do |tuple|
       (hostname,slave) = tuple
       @sd.hosts[hostname].slave = slave
+      slave.alias = hostname
     end
   end
 
