@@ -1,5 +1,4 @@
 #!/bin/bash
-source <% "#{@syncdir}/#{@instrument}" %>/bashrc
+source <% "#{@syncdir}/#{@instrument}" %>/gen/bashrc
 cd <% "#{@syncdir}/#{@instrument}" %> 
-cd <% "#{module}" %>
-# I don't know?
+

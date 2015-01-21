@@ -33,13 +33,24 @@ class SynthDefOptimizer
     end
   end
 
+  def remote(str)
+    return "_remote:#{str}"
+  end
+
   def extract_local_connections
     locals = @sd.connections.select do |conn|
       source  =  conn.source
       sink    =  conn.sink
       resolve(source).host == resolve(sink).host
     end
-    locals
+    remotes = self.extract_remote_connections
+    localremotes = remotes.map do |conn|
+      source  =  conn.source
+      sink    =  conn.sink
+      remsrc = self.remote(source)
+      [SynthConnection.from(source, remsrc),SynthConnection.from(remsrc, sink)]
+    end
+    locals + localremotes.flatten
   end
 
   def extract_remote_connections

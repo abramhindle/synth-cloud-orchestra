@@ -1,4 +1,6 @@
 require 'erb'
+require_relative 'synthdef'
+require 'fileutils'
 
 class Templater
   include ERB::Util
@@ -13,8 +15,28 @@ class Templater
     return blocks.values
   end
 
+  def is_remote(synth)
+    synth.is_a? RemoteBlock
+  end
+
   def synth_of(name)
+    m = name.match("^_remote:(.*)$")
+    if (m)
+      synthname = m[1]
+      synth = self.synth_of(synthname)
+      return RemoteBlock.new(synth)
+    end
     return @synthdef.blocks[name]
+  end
+
+  def connection_synths(connection)
+    source = synth_of(connection.source)
+    sink = synth_of(connection.sink)
+    if self.is_remote(source)
+      warn "Source is remote!"
+      source.host = sink.host
+    end
+    [source, sink]
   end
 
   def initialize(synthdef)
@@ -45,6 +67,10 @@ class Templater
   end
 
   def save(data, file)
+    dir = File.dirname(file)
+    unless (File.exist? dir)
+      FileUtils.mkdir_p(dir)
+    end
     File.open(file, "w+") do |f|
       f.write(data)
     end

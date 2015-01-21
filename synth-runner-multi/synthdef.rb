@@ -82,6 +82,13 @@ end
 
 class SynthConnection
   attr_accessor :source, :sink
+  def self.from_list(l)
+    return SynthConnection.new({"source"=>l[0], "sink"=>l[1]})
+  end
+  def self.from(src,sink)
+    return SynthConnection.new({"source"=>src, "sink"=>sink})
+  end
+
   def initialize( hash )
     @source = hash["source"]
     @sink = hash["sink"]
@@ -123,7 +130,7 @@ class SynthBlock
     @host = hash["host"]
     hash["name"] = name
     # if we have a real manifest hash
-    hash["path"] = "#{Dir.pwd}/#{@module}"
+    hash["path"] ||= "#{Dir.pwd}/#{@module}"
     synthrunner = Synthrunner.new
     if (hash["main"])
       @runner = synthrunner.make_synth(hash)
@@ -132,6 +139,14 @@ class SynthBlock
       @runner = synthrunner.make_from_module(@module, name=@name)
     end
   end
+
+  def get_jack_output_portname
+    self.get_jack_outputs[0].split(":")[0]
+  end
+  def get_jack_input_portname
+    self.get_jack_inputs[0].split(":")[0]
+  end
+
   
   def get_jack_outputs
     @runner.get_jack_outputs
@@ -142,6 +157,58 @@ class SynthBlock
   def run
     @runner.run()
     return Done.new
+  end
+  def hostname
+    @host.slave.hostname
+  end
+  def username
+    @host.slave.username
+  end
+
+end
+
+class RemoteBlock < SynthBlock
+  attr_accessor :synth, :host
+  def initialize(synth )
+    @synth = synth
+    @host = synth.host
+  end  
+
+  def _get_port_num( port )
+    port.match("([0-9]+)$")[1]
+  end
+  def _get_remote_name( name )
+    "remote#{name}"
+  end
+  def _split_name_port( connname )
+    (name, port) = connname.split(":")
+  end
+  def name_and_port( connname )
+    (name, port) = self._split_name_port( connname )
+    name = self._get_remote_name( name )
+    portnum = self._get_port_num(port)
+    [name, portnum]
+  end
+  def remoteify_output(connname)
+    (name, portnum) = self.name_and_port( connname )
+    "#{name}:send_#{portnum}"
+  end
+  def remoteify_input(connname)
+    (name, portnum) = self.name_and_port( connname )
+    "#{name}:receive_#{portnum}"
+  end
+  def get_jack_outputs
+    @synth.get_jack_outputs.map {|x| self.remoteify_output(x) }
+  end
+  def get_jack_inputs
+    @synth.get_jack_inputs.map {|x| self.remoteify_input(x) }
+  end
+
+  def name
+    @synth.name
+  end
+  def module
+    @synth.module
   end
 end
 
