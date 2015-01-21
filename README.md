@@ -17,3 +17,6 @@ Wishlist:
 * Optimize network arrangement
 * Provide RTSP and HTTP Streaming out
 
+Need:
+
+* gem install oj

@@ -1,4 +1,4 @@
 [all]
 <% for @host in @hosts %>
-<%= @host.hostname %> ansible_connection=ssh     anssible_ssh_user=<%= @host.username %>
+<%= @host.hostname %> ansible_connection=ssh     ansible_ssh_user=<%= @host.username %>
 <% end %>
