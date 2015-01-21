@@ -165,6 +165,10 @@ class SynthBlock
     @host.slave.username
   end
 
+  def command()
+    @runner.command
+  end
+
 end
 
 class RemoteBlock < SynthBlock

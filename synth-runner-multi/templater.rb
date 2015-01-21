@@ -85,6 +85,15 @@ class Templater
       warn(outfile)
       self.render_file_to_file(file,outfile)
     end
+    # now gen the synths
+    @synthdef.blocks.each do |key,block|
+      infile = "../gen.erb/synth-.sh"
+      outfile = "gen/synth-#{block.name}.sh"
+      @module = block.module
+      @command = block.command
+      warn(outfile)
+      self.render_file_to_file(infile,outfile)
+    end
   end
 
 end

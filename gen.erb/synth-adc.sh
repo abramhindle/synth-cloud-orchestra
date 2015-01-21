@@ -1,5 +1,5 @@
 #!/bin/bash
-source <% "#{@syncdir}/#{@instrument}/gen/bashrc" %>
+source <%= "#{@syncdir}/#{@instrument}/gen/bashrc" %>
 
-cd <% "#{@syncdir}/#{@instrument}" %>
+cd <%= "#{@syncdir}/#{@instrument}" %>
 # I don't know?

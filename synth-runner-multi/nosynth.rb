@@ -25,4 +25,8 @@ class NoSynth
     (1..@outputs).collect { |i| "system:playback_#{i}" }
   end
 
+  def command()
+    ""
+  end
+
 end

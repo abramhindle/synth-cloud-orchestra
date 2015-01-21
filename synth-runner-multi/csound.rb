@@ -16,6 +16,10 @@ class Csound
     @path = synthdef["path"] || "."
   end
 
+  def command( ) 
+    "csound -iadc -odac -+rtaudio=jack -+jack_client=#{@name} -b 500 -B 2000 #{@main}"
+  end
+
   def run( )
     clientname = @name
     # unsafe

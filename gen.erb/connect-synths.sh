@@ -1,5 +1,5 @@
 #!/bin/bash
-#source <% "#{@syncdir}/#{@instrument}" %>/bashrc
+#source <%= "#{@syncdir}/#{@instrument}" %>/bashrc
 <% for connect in @localconnections %>
 <% src, sink = connection_synths( connect ) %>
 # <%= src.name %> <%= sink.name %> 
