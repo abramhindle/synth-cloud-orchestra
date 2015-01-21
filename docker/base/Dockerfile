@@ -8,6 +8,7 @@ ENV LOGNAME docker
 
 RUN apt-get update; apt-get upgrade -y; apt-get install -y ruby1.9.1 ruby1.9.1-dev make openssh-server vim 
 RUN apt-get install -y csound jackd libjack-dev libjack0
+RUN apt-get install rsync
 
 RUN mkdir /var/run/sshd
 RUN echo 'root:chefbase' | chpasswd

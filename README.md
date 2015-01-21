@@ -20,3 +20,16 @@ Wishlist:
 Need:
 
 * gem install oj
+* ansible http://docs.ansible.com/intro_installation.html#latest-releases-via-apt-ubuntu
+
+    sudo apt-get install software-properties-common
+    sudo apt-add-repository ppa:ansible/ansible
+    sudo apt-get update
+    sudo apt-get install ansible
+
+TODO:
+
+* Write test with allocation
+* Write verifiable test
+
+
