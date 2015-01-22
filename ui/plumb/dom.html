@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width">
+		<link rel="shortcut icon" type="image/png" href="../../img/favicon.png">
+        <title>jsPlumb 1.7.2 demo - statemachine (Vanilla)</title>
+		
+
+<link rel="stylesheet" href="jsplumb.css">
+		<link rel="stylesheet" href="demo.css">
+    </head>
+    
+    <body data-demo-id="statemachine" data-library="dom">
+        <div id="main">
+            <div hidden>
+                <div class="w" id="proto" style="display: hide"><input></input><div class="ep"></div></div>
+	    </div>
+            <!-- demo -->
+            <div class="demo statemachine-demo" id="statemachine-demo">
+                <div class="w" id="adc"><input></input><div class="ep"></div></div>
+                <div class="w" id="dac"><input></input><div class="ep"></div></div>
+            </div>
+            <!-- /demo -->
+        </div>
+	<button onclick="newObject()">New</button>		
+		
+		
+		<script src="dom.jsPlumb-1.7.2-min.js"></script>
+		<script src="jquery-1.11.2.min.js"></script>
+		
+		<script src="demo.js"></script>
+     </body>
+</html>
