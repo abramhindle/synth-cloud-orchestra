@@ -195,11 +195,11 @@ class RemoteBlock < SynthBlock
   end
   def remoteify_output(connname)
     (name, portnum) = self.name_and_port( connname )
-    "#{name}:send_#{portnum}"
+    "#{name}:receive_#{portnum}"
   end
   def remoteify_input(connname)
     (name, portnum) = self.name_and_port( connname )
-    "#{name}:receive_#{portnum}"
+    "#{name}:send_#{portnum}"
   end
   def get_jack_outputs
     @synth.get_jack_outputs.map {|x| self.remoteify_output(x) }

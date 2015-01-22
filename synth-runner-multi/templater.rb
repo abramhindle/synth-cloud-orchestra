@@ -4,7 +4,19 @@ require 'fileutils'
 
 class Templater
   include ERB::Util
-  attr_accessor :localconnections, :connections, :hosts, :syncdir, :instrument, :module, :command, :syncdir, :synthdef
+  attr_accessor :localconnections, :connections, :hosts, :syncdir, :instrument, :module, :command, :syncdir, :synthdef, :instrumentpath
+
+  def initialize(synthdef)
+    @synthdef = synthdef
+    @localconnections = synthdef.locals
+    @connections = synthdef.remotes
+    @hosts = synthdef.slaves
+    @instrument = synthdef.name
+    @syncdir = "cloudorchestra" # + Pathname.new(".").realpath.basename.to_s
+    @instrumentpath = "../../#{@instrument}"
+    puts @syncdir
+  end
+
 
   def synths_of(host)
     puts "synths_of: #{host.alias}"
@@ -39,15 +51,6 @@ class Templater
     [source, sink]
   end
 
-  def initialize(synthdef)
-    @synthdef = synthdef
-    @localconnections = synthdef.locals
-    @connections = synthdef.remotes
-    @hosts = synthdef.slaves
-    @instrument = synthdef.name
-    @syncdir = "cloudorchestra" # + Pathname.new(".").realpath.basename.to_s
-    puts @syncdir
-  end
 
   def get_binding
     binding()
