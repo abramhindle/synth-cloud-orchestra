@@ -6,6 +6,7 @@ var connections = [];
 function deleteNode(domNode) {
     domNode.remove();
     jsp.detachAllConnections(domNode);
+    update();
 }
 
 
@@ -15,9 +16,23 @@ function parseDesc(desc) {
 
 function mkSynth(text) {
     var data = {};
+    updateSynth(data, text);
+    return data;
+}
+function updateSynth(data,text) {
     var v = parseDesc(text);
-    data["id"] = v[0];
-    data["module"] = v[1];
+    data["name"] = v[0];
+    data["module"] = v[1]; 
+}
+
+function getData(domNode) {
+    var data = domNode.data;
+    if (!data) {
+        data = mkSynth(domNode.children[0].value);
+        domNode.data = data;
+    }  else {
+        updateSynth(data, domNode.children[0].value);
+    }
     return data;
 }
 
@@ -27,6 +42,7 @@ function select(domNode) {
         data = mkSynth(domNode.children[0].value);
     }
     fillAttrs(data);    
+    update();
 }
 
 function fillAttrs(data) {
@@ -43,7 +59,30 @@ function fillAttrs(data) {
     $("#attrs").append( ip );
     
 }
-
+function updateJSON() {
+    var json = generateJSON();
+    console.log(json);
+    $("#jsonout").val(json);
+}
+function generateJSON() {
+    var nodes = $(".w").map( function(i,x){ return getData(x) } );
+    var connections = jsp.getAllConnections();
+    var conns = connections.map( function(s) {
+        var src = getData(s.source).name
+        var sink = getData(s.target).name
+        return {"source":src, "sink":sink}
+    });
+    var nodehash = {};
+    for (var i = 0 ; i < nodes.length; i++) {
+        var node = nodes[i];
+        nodehash[node.name] = node;
+    }
+    return JSON.stringify({
+        "type":"synthdef",
+        "blocks": nodehash,
+        "connections":conns
+    },null,"  ");
+}
 function mkid() {
 	return "id"+Math.random().toString(36).substr(2,8);
 }
@@ -51,12 +90,17 @@ function mkid() {
 function newObject() {
 	var obj = $("#proto").clone();
 	obj.attr('id',mkid());
+        obj.attr('class','w');
 	$("#statemachine-demo").append(obj);
-	initWindow(obj);         
+	initWindow(obj); 
+    update();
 }
-function delObject(obj) {
-	
+
+var listeners = [];
+function update() {
+    updateJSON();
 }
+
 function initWindow(w) {
 	instance.draggable(w);
 	instance.doWhileSuspended(function() {
@@ -76,6 +120,7 @@ function initWindow(w) {
 		anchor:"Continuous",
 		allowLoopback:true
 	});
+
 }
 jsPlumb.ready(function() {
 

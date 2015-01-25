@@ -11,19 +11,27 @@
     </head>
     
     <body data-demo-id="statemachine" data-library="dom">
+      <div>
 	<button onclick="newObject()">New</button>		
+      </div>
         <div hidden>
           <div class="attr"
           id="inputproto"><input class="in"></input><input class="in"></input></div>
         </div>
-        <div id="attrs">
+        <div id="attrs" style="float: left;">
         </div>
+	<div style="float: right;">
+          <textarea id="jsonout" cols="80" rows="6">            
+          </textarea>
+          <button onclick="updateJSON()"/>
+        </div>
+
         <div id="main">
             <div hidden>
-                <div class="w" id="proto" style="display: hide"
-                  ondblclick="deleteNode(this)" onclick="select(this)">
-                  <input class="in"></input>
-                  <div class="ep"></div>
+              <div class="" id="proto" style="display: hide"
+                   ondblclick="deleteNode(this)" onclick="select(this)">
+                <input class="in" onchange="update()"></input>
+                <div class="ep"></div>
                 </div>
 	    </div>
             <!-- demo -->
@@ -37,7 +45,6 @@
             </div>
             <!-- /demo -->
         </div>
-		
 	<script src="dom.jsPlumb-1.7.2-min.js"></script>
 	<script src="jquery-1.11.2.min.js"></script>
 	<script src="demo.js"></script>
