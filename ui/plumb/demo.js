@@ -1,5 +1,49 @@
 var instance;
 
+var nodes = [];
+var connections = [];
+
+function deleteNode(domNode) {
+    domNode.remove();
+    jsp.detachAllConnections(domNode);
+}
+
+
+function parseDesc(desc) {
+    return desc.split(' ');
+}
+
+function mkSynth(text) {
+    var data = {};
+    var v = parseDesc(text);
+    data["id"] = v[0];
+    data["module"] = v[1];
+    return data;
+}
+
+function select(domNode) {
+    var data = domNode.data;
+    if (!data) {
+        data = mkSynth(domNode.children[0].value);
+    }
+    fillAttrs(data);    
+}
+
+function fillAttrs(data) {
+    $("#attrs").empty();
+    for (var k in data) {
+        var ip = $("#inputproto").clone();
+	ip.attr('id',mkid());
+        ip.children()[0].value = k;
+        ip.children()[1].value = data[k]||"";
+        $("#attrs").append( ip );
+    }    
+    var ip = $("#inputproto").clone();
+    ip.attr('id',mkid());
+    $("#attrs").append( ip );
+    
+}
+
 function mkid() {
 	return "id"+Math.random().toString(36).substr(2,8);
 }
