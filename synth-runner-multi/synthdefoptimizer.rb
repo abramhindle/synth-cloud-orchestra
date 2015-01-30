@@ -9,6 +9,9 @@ class SynthDefOptimizer
 
   def count_hosts
     counts = Hash.new
+    for key,block in @sd.hosts
+      counts[key] = 0
+    end
     for key,block in @sd.blocks
       if (block.host)
         hostname = block.host.alias
@@ -16,11 +19,13 @@ class SynthDefOptimizer
         counts[hostname] += 1
       end
     end
+    
     counts
   end
 
   def choose_host
     counts = self.count_hosts
+    
     (key,val) = counts.min
     return @sd.hosts[key]
   end
@@ -95,7 +100,9 @@ class SynthDefOptimizer
     # try assign hosts to blocks
     for (key,block) in @sd.blocks
       if (!block.host)
+        warn "Choosing HOST!"
         block.host = self.choose_host()
+        warn block.host
       end
     end
     #
