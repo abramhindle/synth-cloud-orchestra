@@ -9,8 +9,8 @@ class SynthDefOptimizer
 
   def count_hosts
     counts = Hash.new
-    for key,block in @sd.hosts
-      counts[key] = 0
+    for key,host in @sd.hosts
+      counts[host.alias] = 0
     end
     for key,block in @sd.blocks
       if (block.host)
@@ -19,14 +19,31 @@ class SynthDefOptimizer
         counts[hostname] += 1
       end
     end
-    
     counts
   end
 
+  def minhash(h)
+    if h.length == 0
+      return [nil,nil]
+    end
+    m = nil
+    mk = nil
+    h.each do |key,val|
+      if m 
+        if m > val
+          mk = key
+          m = val
+        end
+      else
+        mk = key
+        m = val
+      end
+    end
+    return [mk,m]
+  end
   def choose_host
     counts = self.count_hosts
-    
-    (key,val) = counts.min
+    (key,val) = self.minhash(counts)
     return @sd.hosts[key]
   end
 
@@ -100,9 +117,8 @@ class SynthDefOptimizer
     # try assign hosts to blocks
     for (key,block) in @sd.blocks
       if (!block.host)
-        warn "Choosing HOST!"
         block.host = self.choose_host()
-        warn block.host
+        warn "Choosing HOST! #{block.host.alias}"
       end
     end
     #

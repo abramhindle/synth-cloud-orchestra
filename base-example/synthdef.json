@@ -1,0 +1,48 @@
+{
+    "comment":"This is a multiple host example where we spread across multiple hosts",
+    "type":"synthdef",
+    "hostscomment":"By not setting an IP or hostname for the host we abstract that away. IPs will taken from the slaves file.",
+    "hosts": {
+        "xenakis":{},
+        "bach":{}
+    },
+    "blockcomment":"maybe if a host is not provided it means we autoassign it",
+    "blocks":{
+        "adc":{
+            "module":"ADC",
+            "host":"bach"
+        },
+        "dac":{
+            "module":"DAC",
+            "host":"bach"
+        },
+        "lp":{
+            "host":"xenakis",
+            "module":"lp"
+        },
+        "fm":{
+            "host":"xenakis",
+            "module":"fm"
+        },
+        "lp2":{
+            "module":"lp",
+            "host":"bach"
+        },
+        "lp3":{
+            "host":"bach",
+            "module":"lp"
+        },
+        "lp4":{
+            "host":"xenakis",
+            "module":"lp"
+        }
+    },
+    "connections":[
+        {"source":"fm", "sink":"lp"},
+        {"source":"lp", "sink":"lp2"},
+        {"source":"lp2", "sink":"lp3"},
+        {"source":"lp3", "sink":"dac"},
+        {"source":"lp4", "sink":"dac"},
+        {"source":"adc", "sink":"lp4"}
+    ]
+}
