@@ -6,8 +6,14 @@ trap 'INT' do server.shutdown end
 
 class WriteConfig < WEBrick::HTTPServlet::AbstractServlet
   def do_POST(request, response)
-    status, content_type, body = save_config(request)
-
+    begin
+      status, content_type, body = save_config(request)
+    rescue => e
+      warn e.message
+      warn e.backtrace
+      status, content_type, body = [503, "text/plain", "There's been an error"]
+    end
+    
     response.status = status
     response['Content-Type'] = content_type
     response.body = body
@@ -27,6 +33,7 @@ class WriteConfig < WEBrick::HTTPServlet::AbstractServlet
     f.write(json)
     f.close()
     system("bash finish.sh #{dir}")
+    return [200,'text/html', "Deploying!"]
   end
 end
 

@@ -19,6 +19,15 @@ class SynthDef
 
   def parse_hosts( hashhosts )
     hosts = {}
+    i = 666
+    if not hashhosts
+      hashhosts = {}
+      @slaves.each {|x|
+         i += 1
+         key = "host"+(i.to_s)
+         hashhosts[key] = {}
+      }
+    end
     hashhosts.keys.each do |key|
       hosts[key] = SynthHost.new(key,hashhosts[key])
     end
