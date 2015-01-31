@@ -26,7 +26,9 @@ class Templater
     puts blocks.keys
     return blocks.values
   end
-
+  def host_of(synthname)
+    @synthdef.blocks[synthname].host.slave
+  end
   def is_remote(synth)
     synth.is_a? RemoteBlock
   end
