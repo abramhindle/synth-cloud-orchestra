@@ -31,5 +31,9 @@ TODO:
 
 * Write test with allocation
 * Write verifiable test
-
+* [ ] Chuck Support
+* [ ] SuperCollider Support
+* [ ] PD Support
+* [ ] Arbitrary Support
+* [ ] Better Solver
 

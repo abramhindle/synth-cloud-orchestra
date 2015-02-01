@@ -1,0 +1,41 @@
+# A TRANSPORTATION PROBLEM
+#
+# This problem finds a least cost shipping schedule that meets
+# requirements at markets and supplies at factories.
+#
+#  References:
+#              Dantzig G B, "Linear Programming and Extensions."
+#              Princeton University Press, Princeton, New Jersey, 1963,
+#              Chapter 3-3.
+set H;
+/* hosts */
+set S;
+/* synths */
+param cores{h in H} integer;
+/* capacity of plant i in cases */
+param c{s in S, t in S} binary; 
+/* set c{S} within S; */
+/* connection array */
+var a{h in H, s in S} >= 0;
+/* allocation array! */
+minimize cost: (sum{s in S, t in S} c[s,t]) - 
+               card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]})
+sum{g in Groups, (i,w,p) in Items[g]} p*x[i];
+/* ^^^ remotes is complicated! */
+s.t. assign{s in S}: sum{h in H} a[h,s] = 1;
+/* the constraint of assign it to 1 host */
+
+s.t. demand{j in J}: sum{i in I} x[i,j] >= b[j];
+/* satisfy demand at market j */
+data;
+set H := Host1 Host2 Host3;
+set S := Adc Fm1 Lp1 Dac
+param cores := Host1   1
+               Host2   1
+               Host3   2;
+param c :              Adc      Fm1     Lp1  Dac := 
+           Adc         0        0       1    0
+           Fm1         0        0       1    1
+           Lp1         0        0       0    1
+           Dac         0        0       0    0  ;
+end
