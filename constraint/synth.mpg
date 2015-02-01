@@ -13,16 +13,34 @@ set S;
 /* synths */
 param cores{h in H} integer;
 /* capacity of plant i in cases */
-/* param c{s in S, t in S} binary;  */
-set C{S} within S; 
+ param c{s in S, t in S} binary;  
+/*set C{S} within S;  */
 /* connection array */
-var a{h in H, s in S} >= 0 binary;
+var a{h in H, s in S} >= 0;
 /* allocation array! */
 minimize cost: 
-	card(
-	{s in S, t in C[s]}
-	) - 
-	card({s in S, t in C[s],h in H});
+	sum{s in S, t in S} c[s,t] -
+	(
+		sum{h in H, s in S, t in S: s <> t}2*(a[h,s] + a[h,t])
+		- sum{h in H, s in S, t in S: s <> t}a[h,s]
+		- sum{h in H, s in S, t in S: s <> t}a[h,t]
+	);
+#	sum{h in H, s in S, t in S}(min(a[h,s], a[h,t]));
+#	(
+#		a[Host1,Adc]*a[Host1,Lp1] + 
+#		a[Host2,Adc]*a[Host2,Lp1] + 
+#		a[Host3,Adc]*a[Host3,Lp1] +
+#		a[Host1,Fm1]*a[Host1,Lp1] + 
+#		a[Host2,Fm1]*a[Host2,Lp1] + 
+#		a[Host3,Fm1]*a[Host3,Lp1] +
+#		a[Host1,Fm1]*a[Host1,Dac] + 
+#		a[Host2,Fm1]*a[Host2,Dac] + 
+#		a[Host3,Fm1]*a[Host3,Dac] +
+#		a[Host1,Lp1]*a[Host1,Dac] + 
+#		a[Host2,Lp1]*a[Host2,Dac] + 
+#		a[Host3,Lp1]*a[Host3,Dac] 
+#	);
+	/* sum({s in S, t in C[s],h in H}); */
 /*	card(setof{s in S, t in C[s], h in H}(s,t,h,a[h,s] + a[h,t])); */
 	/* card({s in S, t in C[s], h in H: a[h,s] and a[h,t]}); */
 	/*	if (a[h,s] and a[h,t]) then {1} else {0} ;*/ /*: a[h,s] and a[h,t]});*/ 
@@ -32,8 +50,8 @@ minimize cost:
 /* ^^^ remotes is complicated! */
 s.t. assign{s in S}: sum{h in H} a[h,s] = 1;
 /* the constraint of assign it to 1 host */
-/* s.t. demand{j in J}: sum{i in I} x[i,j] >= b[j]; */
-/* satisfy demand at market j */
+s.t. corecheck{h in H}: cores[h] - sum{s in S}(a[h,s]) >= 0;
+/* This avoid overload -- but what if we have to overload! */
 data;
 
 set H := Host1 Host2 Host3;
@@ -43,16 +61,14 @@ set S := Adc Fm1 Lp1 Dac;
 param cores := Host1   1
                Host2   1
                Host3   2;
-
+/*
 set C[Adc] := Lp1;
 set C[Fm1] := Lp1 Dac;
 set C[Lp1] := Dac;
-set C[Dac] := ;
-/*
+set C[Dac] := ;*/
 param c :              Adc      Fm1     Lp1  Dac := 
            Adc         0        0       1    0
            Fm1         0        0       1    1
            Lp1         0        0       0    1
            Dac         0        0       0    0  ;
-*/
 end
