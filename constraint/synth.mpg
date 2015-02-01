@@ -16,14 +16,16 @@ param cores{h in H} integer;
 /* param c{s in S, t in S} binary;  */
 set C{S} within S; 
 /* connection array */
-var a{h in H, s in S} >= 0;
+var a{h in H, s in S} >= 0 binary;
 /* allocation array! */
 minimize cost: 
 	card(
 	{s in S, t in C[s]}
-	);
-/*- 
-                sum{s in S, t in C[s], h in H: a[h,s] and a[h,t]} 1 */
+	) - 
+	card({s in S, t in C[s],h in H});
+/*	card(setof{s in S, t in C[s], h in H}(s,t,h,a[h,s] + a[h,t])); */
+	/* card({s in S, t in C[s], h in H: a[h,s] and a[h,t]}); */
+	/*	if (a[h,s] and a[h,t]) then {1} else {0} ;*/ /*: a[h,s] and a[h,t]});*/ 
 /*               card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]})*/
 /*              card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]}) */
 /* sum{g in Groups, (i,w,p) in Items[g]} p*x[i];*/
