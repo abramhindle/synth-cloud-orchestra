@@ -18,7 +18,10 @@ set C{S} within S;
 /* connection array */
 var a{h in H, s in S} >= 0;
 /* allocation array! */
-minimize cost: card({s in S, t in C[s]})
+minimize cost: 
+	card(
+	{s in S, t in C[s]}
+	);
 /*- 
                 sum{s in S, t in C[s], h in H: a[h,s] and a[h,t]} 1 */
 /*               card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]})*/
@@ -27,18 +30,22 @@ minimize cost: card({s in S, t in C[s]})
 /* ^^^ remotes is complicated! */
 s.t. assign{s in S}: sum{h in H} a[h,s] = 1;
 /* the constraint of assign it to 1 host */
-
-s.t. demand{j in J}: sum{i in I} x[i,j] >= b[j];
+/* s.t. demand{j in J}: sum{i in I} x[i,j] >= b[j]; */
 /* satisfy demand at market j */
 data;
+
 set H := Host1 Host2 Host3;
-set S := Adc Fm1 Lp1 Dac
+
+set S := Adc Fm1 Lp1 Dac;
+
 param cores := Host1   1
                Host2   1
                Host3   2;
+
 set C[Adc] := Lp1;
 set C[Fm1] := Lp1 Dac;
 set C[Lp1] := Dac;
+set C[Dac] := ;
 /*
 param c :              Adc      Fm1     Lp1  Dac := 
            Adc         0        0       1    0
