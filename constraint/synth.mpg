@@ -13,14 +13,17 @@ set S;
 /* synths */
 param cores{h in H} integer;
 /* capacity of plant i in cases */
-param c{s in S, t in S} binary; 
-/* set c{S} within S; */
+/* param c{s in S, t in S} binary;  */
+set C{S} within S; 
 /* connection array */
 var a{h in H, s in S} >= 0;
 /* allocation array! */
-minimize cost: (sum{s in S, t in S} c[s,t]) - 
-               card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]})
-sum{g in Groups, (i,w,p) in Items[g]} p*x[i];
+minimize cost: card({s in S, t in C[s]})
+/*- 
+                sum{s in S, t in C[s], h in H: a[h,s] and a[h,t]} 1 */
+/*               card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]})*/
+/*              card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]}) */
+/* sum{g in Groups, (i,w,p) in Items[g]} p*x[i];*/
 /* ^^^ remotes is complicated! */
 s.t. assign{s in S}: sum{h in H} a[h,s] = 1;
 /* the constraint of assign it to 1 host */
@@ -33,9 +36,14 @@ set S := Adc Fm1 Lp1 Dac
 param cores := Host1   1
                Host2   1
                Host3   2;
+set C[Adc] := Lp1;
+set C[Fm1] := Lp1 Dac;
+set C[Lp1] := Dac;
+/*
 param c :              Adc      Fm1     Lp1  Dac := 
            Adc         0        0       1    0
            Fm1         0        0       1    1
            Lp1         0        0       0    1
            Dac         0        0       0    0  ;
+*/
 end
