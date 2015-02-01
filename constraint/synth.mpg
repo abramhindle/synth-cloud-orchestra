@@ -17,16 +17,20 @@ param cores{h in H} integer;
 /*set C{S} within S;  */
 /* connection array */
 var a{h in H, s in S} >= 0;
-var mc{h in H} >= 0;
 /* allocation array! */
+var overflow{h in H} >= 0;
+/* mc stands for max cores -- this is overflow
 minimize cost: 
-	100 * sum{h in H}mc[h] +
+	100 * sum{h in H}overflow[h] +
 	sum{s in S, t in S} c[s,t] -
 	(
 		sum{h in H, s in S, t in S: s <> t}2*(a[h,s] + a[h,t])
 		- sum{h in H, s in S, t in S: s <> t}a[h,s]
 		- sum{h in H, s in S, t in S: s <> t}a[h,t]
 	);
+/* alrighty so we can't multiply or do ands or anything smart :(
+   so we instead boost some value to be larger in the case of local connections
+*/
 #	sum{h in H, s in S, t in S}(min(a[h,s], a[h,t]));
 #	(
 #		a[Host1,Adc]*a[Host1,Lp1] + 
@@ -53,8 +57,8 @@ minimize cost:
 s.t. assign{s in S}: sum{h in H} a[h,s] = 1;
 /* the constraint of assign it to 1 host */
 /* s.t. corecheck{h in H}: cores[h] - sum{s in S}(a[h,s]) >= 0; */
-s.t. corechekc2{h in H}: mc[h] >= 0;
-s.t. corechekc3{h in H}: mc[h] >= sum{s in S}(a[h,s]) - cores[h];
+s.t. corecheck2{h in H}: overflow[h] >= 0;
+s.t. corecheck3{h in H}: overflow[h] >= sum{s in S}(a[h,s]) - cores[h];
 /* This avoid overload -- but what if we have to overload! */
 data;
 
@@ -64,12 +68,7 @@ set S := Adc Fm1 Lp1 Dac;
 
 param cores := Host1   1
                Host2   1
-               Host3   2;
-/*
-set C[Adc] := Lp1;
-set C[Fm1] := Lp1 Dac;
-set C[Lp1] := Dac;
-set C[Dac] := ;*/
+               Host3   1;
 param c :              Adc      Fm1     Lp1  Dac := 
            Adc         0        0       1    0
            Fm1         0        0       1    1
