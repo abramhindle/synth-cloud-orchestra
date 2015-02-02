@@ -1,0 +1,37 @@
+\* Problem: synth *\
+
+Minimize
+ cost: - 8 a(Host1,Fm1) - 8 a(Host1,Lp1) - 8 a(Host1,Lp2)
+ - 8 a(Host1,Dac) - 8 a(Host1,Adc) - 8 a(Host2,Fm1) - 8 a(Host2,Lp1)
+ - 8 a(Host2,Lp2) - 8 a(Host2,Dac) - 8 a(Host2,Adc) - 8 a(Host3,Fm1)
+ - 8 a(Host3,Lp1) - 8 a(Host3,Lp2) - 8 a(Host3,Dac) - 8 a(Host3,Adc)
+ - 8 a(Host4,Fm1) - 8 a(Host4,Lp1) - 8 a(Host4,Lp2) - 8 a(Host4,Dac)
+ - 8 a(Host4,Adc) + 100 overflow(Host1) + 100 overflow(Host2)
+ + 100 overflow(Host3) + 100 overflow(Host4)
+\* constant term = 6 *\
+
+Subject To
+ assign(Adc): + a(Host1,Adc) + a(Host2,Adc) + a(Host3,Adc)
+ + a(Host4,Adc) = 1
+ assign(Fm1): + a(Host1,Fm1) + a(Host2,Fm1) + a(Host3,Fm1)
+ + a(Host4,Fm1) = 1
+ assign(Lp1): + a(Host1,Lp1) + a(Host2,Lp1) + a(Host3,Lp1)
+ + a(Host4,Lp1) = 1
+ assign(Lp2): + a(Host1,Lp2) + a(Host2,Lp2) + a(Host3,Lp2)
+ + a(Host4,Lp2) = 1
+ assign(Dac): + a(Host1,Dac) + a(Host2,Dac) + a(Host3,Dac)
+ + a(Host4,Dac) = 1
+ corecheck2(Host1): + overflow(Host1) >= -0
+ corecheck2(Host2): + overflow(Host2) >= -0
+ corecheck2(Host3): + overflow(Host3) >= -0
+ corecheck2(Host4): + overflow(Host4) >= -0
+ corecheck3(Host1): - a(Host1,Fm1) - a(Host1,Lp1) - a(Host1,Lp2)
+ - a(Host1,Dac) - a(Host1,Adc) + overflow(Host1) >= -2
+ corecheck3(Host2): - a(Host2,Fm1) - a(Host2,Lp1) - a(Host2,Lp2)
+ - a(Host2,Dac) - a(Host2,Adc) + overflow(Host2) >= -1
+ corecheck3(Host3): - a(Host3,Fm1) - a(Host3,Lp1) - a(Host3,Lp2)
+ - a(Host3,Dac) - a(Host3,Adc) + overflow(Host3) >= -1
+ corecheck3(Host4): - a(Host4,Fm1) - a(Host4,Lp1) - a(Host4,Lp2)
+ - a(Host4,Dac) - a(Host4,Adc) + overflow(Host4) >= -1
+
+End

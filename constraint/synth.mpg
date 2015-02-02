@@ -1,27 +1,23 @@
-# A TRANSPORTATION PROBLEM
+# A allocation problem
 #
-# This problem finds a least cost shipping schedule that meets
-# requirements at markets and supplies at factories.
+# Try to allocate synthesizers to hosts reducing links and avoiding core overload!
 #
-#  References:
-#              Dantzig G B, "Linear Programming and Extensions."
-#              Princeton University Press, Princeton, New Jersey, 1963,
-#              Chapter 3-3.
 set H;
 /* hosts */
 set S;
 /* synths */
+param alpha integer; 
+/* how important is overflow */
 param cores{h in H} integer;
-/* capacity of plant i in cases */
+/* cores of hosts */
  param c{s in S, t in S} binary;  
-/*set C{S} within S;  */
 /* connection array */
 var a{h in H, s in S} >= 0;
 /* allocation array! */
 var overflow{h in H} >= 0;
-/* mc stands for max cores -- this is overflow
+/* overflow of cores */
 minimize cost: 
-	100 * sum{h in H}overflow[h] +
+	alpha * sum{h in H} (overflow[h]) +
 	sum{s in S, t in S} c[s,t] -
 	(
 		sum{h in H, s in S, t in S: s <> t}2*(a[h,s] + a[h,t])
@@ -31,47 +27,29 @@ minimize cost:
 /* alrighty so we can't multiply or do ands or anything smart :(
    so we instead boost some value to be larger in the case of local connections
 */
-#	sum{h in H, s in S, t in S}(min(a[h,s], a[h,t]));
-#	(
-#		a[Host1,Adc]*a[Host1,Lp1] + 
-#		a[Host2,Adc]*a[Host2,Lp1] + 
-#		a[Host3,Adc]*a[Host3,Lp1] +
-#		a[Host1,Fm1]*a[Host1,Lp1] + 
-#		a[Host2,Fm1]*a[Host2,Lp1] + 
-#		a[Host3,Fm1]*a[Host3,Lp1] +
-#		a[Host1,Fm1]*a[Host1,Dac] + 
-#		a[Host2,Fm1]*a[Host2,Dac] + 
-#		a[Host3,Fm1]*a[Host3,Dac] +
-#		a[Host1,Lp1]*a[Host1,Dac] + 
-#		a[Host2,Lp1]*a[Host2,Dac] + 
-#		a[Host3,Lp1]*a[Host3,Dac] 
-#	);
-	/* sum({s in S, t in C[s],h in H}); */
-/*	card(setof{s in S, t in C[s], h in H}(s,t,h,a[h,s] + a[h,t])); */
-	/* card({s in S, t in C[s], h in H: a[h,s] and a[h,t]}); */
-	/*	if (a[h,s] and a[h,t]) then {1} else {0} ;*/ /*: a[h,s] and a[h,t]});*/ 
-/*               card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]})*/
-/*              card({h in H, s in S, t in S: c[s,t] and a[h,s] and a[h,t]}) */
-/* sum{g in Groups, (i,w,p) in Items[g]} p*x[i];*/
 /* ^^^ remotes is complicated! */
 s.t. assign{s in S}: sum{h in H} a[h,s] = 1;
 /* the constraint of assign it to 1 host */
-/* s.t. corecheck{h in H}: cores[h] - sum{s in S}(a[h,s]) >= 0; */
 s.t. corecheck2{h in H}: overflow[h] >= 0;
 s.t. corecheck3{h in H}: overflow[h] >= sum{s in S}(a[h,s]) - cores[h];
-/* This avoid overload -- but what if we have to overload! */
+/* This calculates overload - cheap maximum function*/
+/* This following section needs to be generated carefully */
 data;
 
-set H := Host1 Host2 Host3;
+set H := Host1 Host2 Host3 Host4;
 
-set S := Adc Fm1 Lp1 Dac;
+set S := Adc Fm1 Lp1 Lp2 Dac;
 
-param cores := Host1   1
+param alpha := 100;
+
+param cores := Host1   2
                Host2   1
-               Host3   1;
-param c :              Adc      Fm1     Lp1  Dac := 
-           Adc         0        0       1    0
-           Fm1         0        0       1    1
-           Lp1         0        0       0    1
-           Dac         0        0       0    0  ;
+               Host3   1
+               Host4   1;
+param c :              Adc      Fm1     Lp1  Lp2 Dac := 
+           Adc         0        0       1    0   0
+           Fm1         0        0       1    0   1
+           Lp1         0        0       0    1   1
+           Lp2         0        0       0    0   1
+           Dac         0        0       0    0   0  ;
 end
