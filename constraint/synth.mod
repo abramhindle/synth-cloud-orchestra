@@ -16,14 +16,12 @@ var a{h in H, s in S} >= 0;
 /* allocation array! */
 var overflow{h in H} >= 0;
 /* overflow of cores */
+var locals{h in H,s in S,t in S} >= 0 binary;
+
 minimize cost: 
 	alpha * sum{h in H} (overflow[h]) +
         sum{s in S} card(c[s]) -     
-	(
-		sum{h in H, s in S, t in S: s <> t}2*(a[h,s] + a[h,t])
-		- sum{h in H, s in S, t in S: s <> t}a[h,s]
-		- sum{h in H, s in S, t in S: s <> t}a[h,t]
-	);
+        sum{h in H, s in S, t in c[s]} locals[h,s,t];
 /* alrighty so we can't multiply or do ands or anything smart :(
    so we instead boost some value to be larger in the case of local connections
 */
@@ -33,6 +31,8 @@ s.t. assign{s in S}: sum{h in H} a[h,s] = 1;
 s.t. corecheck2{h in H}: overflow[h] >= 0;
 s.t. corecheck3{h in H}: overflow[h] >= sum{s in S}(a[h,s]) - cores[h];
 /* This calculates overload - cheap maximum function*/
+s.t. localcheck1{h in H,s in S,t in c[s]}: locals[h,s,t] <= a[h,s];
+s.t. localcheck2{h in H,s in S,t in c[s]}: locals[h,s,t] <= a[h,t];
 /* This following section needs to be generated carefully */
 data;
 
