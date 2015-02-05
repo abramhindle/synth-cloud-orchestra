@@ -10,7 +10,7 @@ param alpha integer;
 /* how important is overflow */
 param cores{h in H} integer;
 /* cores of hosts */
- param c{s in S, t in S} binary;  
+set c{S};
 /* connection array */
 var a{h in H, s in S} >= 0;
 /* allocation array! */
@@ -18,7 +18,7 @@ var overflow{h in H} >= 0;
 /* overflow of cores */
 minimize cost: 
 	alpha * sum{h in H} (overflow[h]) +
-	sum{s in S, t in S} c[s,t] -
+        sum{s in S} card(c[s]) -     
 	(
 		sum{h in H, s in S, t in S: s <> t}2*(a[h,s] + a[h,t])
 		- sum{h in H, s in S, t in S: s <> t}a[h,s]
@@ -46,10 +46,9 @@ param cores := Host1   2
                Host2   1
                Host3   1
                Host4   1;
-param c :              Adc      Fm1     Lp1  Lp2 Dac := 
-           Adc         0        0       1    0   0
-           Fm1         0        0       1    0   1
-           Lp1         0        0       0    1   1
-           Lp2         0        0       0    0   1
-           Dac         0        0       0    0   0  ;
-end
+set c[Adc] := Lp1;
+set c[Fm1] := Lp1 Dac;
+set c[Lp1] := Lp2 Dac;
+set c[Lp2] := Dac;
+set c[Dac] :=;
+
