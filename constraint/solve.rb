@@ -60,13 +60,12 @@ class HostSynthSolver
         end
       end
     end
-    warn tuples
     safehostmap = Hash[self.hostlist.zip(@hostnames)]
     safesynthmap = Hash[self.synthlist.zip(@synthnames)]
     t = tuples.map do |t|
       [safehostmap[t[0]],safesynthmap[t[1]]]
     end
-    return t
+    return t.sort
   end
 
   def read_output
@@ -131,7 +130,7 @@ end
 
 if $0 == __FILE__
   hosts = ["Host Big","Host One","Host Two","Host Three","Host Four"]
-  cores = [2, 1, 1, 1, 1]
+  cores = [2, 2, 2, 2, 2]
   synthnames = ["adc","fm 1","lp 1","lp 2","dac"]
   connections = [["adc","lp 1"],["lp 1", "lp 2"],
                  ["lp 1","dac"],["fm 1","lp 1"],

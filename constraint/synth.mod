@@ -42,7 +42,7 @@ set S := Synth_adc Synth_fm_1 Synth_lp_1 Synth_lp_2 Synth_dac;
 
 param alpha := 100;
 
-param cores := Host_Host_Big 2 Host_Host_One 1 Host_Host_Two 1 Host_Host_Three 1 Host_Host_Four 1;
+param cores := Host_Host_Big 2 Host_Host_One 2 Host_Host_Two 2 Host_Host_Three 2 Host_Host_Four 2;
 
 
 set c[Synth_adc] := Synth_lp_1 ;
