@@ -36,19 +36,23 @@ s.t. localcheck2{h in H,s in S,t in c[s]}: locals[h,s,t] <= a[h,t];
 /* This following section needs to be generated carefully */
 data;
 
-set H := Host1 Host2 Host3 Host4;
+set H := Host_Host_Big Host_Host_One Host_Host_Two Host_Host_Three Host_Host_Four;
 
-set S := Adc Fm1 Lp1 Lp2 Dac;
+set S := Synth_adc Synth_fm_1 Synth_lp_1 Synth_lp_2 Synth_dac;
 
 param alpha := 100;
 
-param cores := Host1   2
-               Host2   1
-               Host3   1
-               Host4   1;
-set c[Adc] := Lp1;
-set c[Fm1] := Lp1 Dac;
-set c[Lp1] := Lp2 Dac;
-set c[Lp2] := Dac;
-set c[Dac] :=;
+param cores := Host_Host_Big 2 Host_Host_One 1 Host_Host_Two 1 Host_Host_Three 1 Host_Host_Four 1;
+
+
+set c[Synth_adc] := Synth_lp_1 ;
+
+set c[Synth_fm_1] := Synth_lp_1 Synth_dac ;
+
+set c[Synth_lp_1] := Synth_lp_2 Synth_dac ;
+
+set c[Synth_lp_2] := Synth_dac ;
+
+set c[Synth_dac] :=  ;
+
 

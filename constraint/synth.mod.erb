@@ -10,20 +10,18 @@ param alpha integer;
 /* how important is overflow */
 param cores{h in H} integer;
 /* cores of hosts */
- param c{s in S, t in S} binary;  
+set c{S};
 /* connection array */
 var a{h in H, s in S} >= 0;
 /* allocation array! */
 var overflow{h in H} >= 0;
 /* overflow of cores */
+var locals{h in H,s in S,t in S} >= 0 binary;
+
 minimize cost: 
 	alpha * sum{h in H} (overflow[h]) +
-	sum{s in S, t in S} c[s,t] -
-	(
-		sum{h in H, s in S, t in S: s <> t}2*(a[h,s] + a[h,t])
-		- sum{h in H, s in S, t in S: s <> t}a[h,s]
-		- sum{h in H, s in S, t in S: s <> t}a[h,t]
-	);
+        sum{s in S} card(c[s]) -     
+        sum{h in H, s in S, t in c[s]} locals[h,s,t];
 /* alrighty so we can't multiply or do ands or anything smart :(
    so we instead boost some value to be larger in the case of local connections
 */
@@ -33,49 +31,20 @@ s.t. assign{s in S}: sum{h in H} a[h,s] = 1;
 s.t. corecheck2{h in H}: overflow[h] >= 0;
 s.t. corecheck3{h in H}: overflow[h] >= sum{s in S}(a[h,s]) - cores[h];
 /* This calculates overload - cheap maximum function*/
+s.t. localcheck1{h in H,s in S,t in c[s]}: locals[h,s,t] <= a[h,s];
+s.t. localcheck2{h in H,s in S,t in c[s]}: locals[h,s,t] <= a[h,t];
 /* This following section needs to be generated carefully */
 data;
 
-set H := 
-<% i = 1 %>
-<% for host in @hosts %>
-   <%= "Host#{i} /* #{host.alias}  */" %>
-   <% i += 1 %>
-<% end %>
-;
+set H := <%= hostlist().join(" ") %>;
 
-set S := 
-<% i = 1 %>
-<% for synth in @synths %>
-   <%= "Synth#{i} /* #{synth.name}  */" %>
-   <% i += 1 %>
-<% end %>
-;
+set S := <%= synthlist().join(" ") %>;
 
-param alpha := <%= 100 %>;
+param alpha := <%= alpha() %>;
 
-param cores := 
-<% i = 1 %>
-<% for host in @hosts %>
-   <%= "Host#{i} #{host.cores} /* #{host.alias}  */" %>
-   <% i += 1 %>
-<% end %>
-;
+param cores := <%= hostcoremap() %>;
 
-param c :
-<% i = 1 %>
-<% for synth in @synths %>
-   <%= "Synth#{i} /* #{synth.name}  */" %>
-   <% i += 1 %>
+<% for synth in synthnames() %>
+set c[<%= safesynth(synth)  %>] := <%= synths_connected_to(synth) %> ;
 <% end %>
-:= 
 
-<% for synth in @synths %>
-   <%= "Synth#{i} /* #{synth.name}  */" %>
-   <% for synth2 in @synths %>
-      <%= "#{is_connected(synth, synth2)}" %>
-   <% end %>
-   <% i += 1 %>
-<% end %>
-;
-end

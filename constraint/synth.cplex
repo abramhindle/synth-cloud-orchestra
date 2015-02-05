@@ -1,188 +1,325 @@
 \* Problem: synth *\
 
 Minimize
- cost: + 100 overflow(Host1) + 100 overflow(Host2) + 100 overflow(Host3)
- + 100 overflow(Host4) - locals(Host1,Adc,Lp1) - locals(Host1,Fm1,Lp1)
- - locals(Host1,Fm1,Dac) - locals(Host1,Lp1,Lp2) - locals(Host1,Lp1,Dac)
- - locals(Host1,Lp2,Dac) - locals(Host2,Adc,Lp1) - locals(Host2,Fm1,Lp1)
- - locals(Host2,Fm1,Dac) - locals(Host2,Lp1,Lp2) - locals(Host2,Lp1,Dac)
- - locals(Host2,Lp2,Dac) - locals(Host3,Adc,Lp1) - locals(Host3,Fm1,Lp1)
- - locals(Host3,Fm1,Dac) - locals(Host3,Lp1,Lp2) - locals(Host3,Lp1,Dac)
- - locals(Host3,Lp2,Dac) - locals(Host4,Adc,Lp1) - locals(Host4,Fm1,Lp1)
- - locals(Host4,Fm1,Dac) - locals(Host4,Lp1,Lp2) - locals(Host4,Lp1,Dac)
- - locals(Host4,Lp2,Dac)
+ cost: + 100 overflow(Host_Host_Big) + 100 overflow(Host_Host_One)
+ + 100 overflow(Host_Host_Two) + 100 overflow(Host_Host_Three)
+ + 100 overflow(Host_Host_Four)
+ - locals(Host_Host_Big,Synth_adc,Synth_lp_1)
+ - locals(Host_Host_Big,Synth_fm_1,Synth_lp_1)
+ - locals(Host_Host_Big,Synth_fm_1,Synth_dac)
+ - locals(Host_Host_Big,Synth_lp_1,Synth_lp_2)
+ - locals(Host_Host_Big,Synth_lp_1,Synth_dac)
+ - locals(Host_Host_Big,Synth_lp_2,Synth_dac)
+ - locals(Host_Host_One,Synth_adc,Synth_lp_1)
+ - locals(Host_Host_One,Synth_fm_1,Synth_lp_1)
+ - locals(Host_Host_One,Synth_fm_1,Synth_dac)
+ - locals(Host_Host_One,Synth_lp_1,Synth_lp_2)
+ - locals(Host_Host_One,Synth_lp_1,Synth_dac)
+ - locals(Host_Host_One,Synth_lp_2,Synth_dac)
+ - locals(Host_Host_Two,Synth_adc,Synth_lp_1)
+ - locals(Host_Host_Two,Synth_fm_1,Synth_lp_1)
+ - locals(Host_Host_Two,Synth_fm_1,Synth_dac)
+ - locals(Host_Host_Two,Synth_lp_1,Synth_lp_2)
+ - locals(Host_Host_Two,Synth_lp_1,Synth_dac)
+ - locals(Host_Host_Two,Synth_lp_2,Synth_dac)
+ - locals(Host_Host_Three,Synth_adc,Synth_lp_1)
+ - locals(Host_Host_Three,Synth_fm_1,Synth_lp_1)
+ - locals(Host_Host_Three,Synth_fm_1,Synth_dac)
+ - locals(Host_Host_Three,Synth_lp_1,Synth_lp_2)
+ - locals(Host_Host_Three,Synth_lp_1,Synth_dac)
+ - locals(Host_Host_Three,Synth_lp_2,Synth_dac)
+ - locals(Host_Host_Four,Synth_adc,Synth_lp_1)
+ - locals(Host_Host_Four,Synth_fm_1,Synth_lp_1)
+ - locals(Host_Host_Four,Synth_fm_1,Synth_dac)
+ - locals(Host_Host_Four,Synth_lp_1,Synth_lp_2)
+ - locals(Host_Host_Four,Synth_lp_1,Synth_dac)
+ - locals(Host_Host_Four,Synth_lp_2,Synth_dac)
 \* constant term = 6 *\
 
 Subject To
- assign(Adc): + a(Host1,Adc) + a(Host2,Adc) + a(Host3,Adc)
- + a(Host4,Adc) = 1
- assign(Fm1): + a(Host1,Fm1) + a(Host2,Fm1) + a(Host3,Fm1)
- + a(Host4,Fm1) = 1
- assign(Lp1): + a(Host1,Lp1) + a(Host2,Lp1) + a(Host3,Lp1)
- + a(Host4,Lp1) = 1
- assign(Lp2): + a(Host1,Lp2) + a(Host2,Lp2) + a(Host3,Lp2)
- + a(Host4,Lp2) = 1
- assign(Dac): + a(Host1,Dac) + a(Host2,Dac) + a(Host3,Dac)
- + a(Host4,Dac) = 1
- corecheck2(Host1): + overflow(Host1) >= -0
- corecheck2(Host2): + overflow(Host2) >= -0
- corecheck2(Host3): + overflow(Host3) >= -0
- corecheck2(Host4): + overflow(Host4) >= -0
- corecheck3(Host1): - a(Host1,Adc) - a(Host1,Fm1) - a(Host1,Lp1)
- - a(Host1,Lp2) - a(Host1,Dac) + overflow(Host1) >= -2
- corecheck3(Host2): - a(Host2,Adc) - a(Host2,Fm1) - a(Host2,Lp1)
- - a(Host2,Lp2) - a(Host2,Dac) + overflow(Host2) >= -1
- corecheck3(Host3): - a(Host3,Adc) - a(Host3,Fm1) - a(Host3,Lp1)
- - a(Host3,Lp2) - a(Host3,Dac) + overflow(Host3) >= -1
- corecheck3(Host4): - a(Host4,Adc) - a(Host4,Fm1) - a(Host4,Lp1)
- - a(Host4,Lp2) - a(Host4,Dac) + overflow(Host4) >= -1
- localcheck1(Host1,Adc,Lp1): - a(Host1,Adc) + locals(Host1,Adc,Lp1)
- <= -0
- localcheck1(Host1,Fm1,Lp1): - a(Host1,Fm1) + locals(Host1,Fm1,Lp1)
- <= -0
- localcheck1(Host1,Fm1,Dac): - a(Host1,Fm1) + locals(Host1,Fm1,Dac)
- <= -0
- localcheck1(Host1,Lp1,Lp2): - a(Host1,Lp1) + locals(Host1,Lp1,Lp2)
- <= -0
- localcheck1(Host1,Lp1,Dac): - a(Host1,Lp1) + locals(Host1,Lp1,Dac)
- <= -0
- localcheck1(Host1,Lp2,Dac): - a(Host1,Lp2) + locals(Host1,Lp2,Dac)
- <= -0
- localcheck1(Host2,Adc,Lp1): - a(Host2,Adc) + locals(Host2,Adc,Lp1)
- <= -0
- localcheck1(Host2,Fm1,Lp1): - a(Host2,Fm1) + locals(Host2,Fm1,Lp1)
- <= -0
- localcheck1(Host2,Fm1,Dac): - a(Host2,Fm1) + locals(Host2,Fm1,Dac)
- <= -0
- localcheck1(Host2,Lp1,Lp2): - a(Host2,Lp1) + locals(Host2,Lp1,Lp2)
- <= -0
- localcheck1(Host2,Lp1,Dac): - a(Host2,Lp1) + locals(Host2,Lp1,Dac)
- <= -0
- localcheck1(Host2,Lp2,Dac): - a(Host2,Lp2) + locals(Host2,Lp2,Dac)
- <= -0
- localcheck1(Host3,Adc,Lp1): - a(Host3,Adc) + locals(Host3,Adc,Lp1)
- <= -0
- localcheck1(Host3,Fm1,Lp1): - a(Host3,Fm1) + locals(Host3,Fm1,Lp1)
- <= -0
- localcheck1(Host3,Fm1,Dac): - a(Host3,Fm1) + locals(Host3,Fm1,Dac)
- <= -0
- localcheck1(Host3,Lp1,Lp2): - a(Host3,Lp1) + locals(Host3,Lp1,Lp2)
- <= -0
- localcheck1(Host3,Lp1,Dac): - a(Host3,Lp1) + locals(Host3,Lp1,Dac)
- <= -0
- localcheck1(Host3,Lp2,Dac): - a(Host3,Lp2) + locals(Host3,Lp2,Dac)
- <= -0
- localcheck1(Host4,Adc,Lp1): - a(Host4,Adc) + locals(Host4,Adc,Lp1)
- <= -0
- localcheck1(Host4,Fm1,Lp1): - a(Host4,Fm1) + locals(Host4,Fm1,Lp1)
- <= -0
- localcheck1(Host4,Fm1,Dac): - a(Host4,Fm1) + locals(Host4,Fm1,Dac)
- <= -0
- localcheck1(Host4,Lp1,Lp2): - a(Host4,Lp1) + locals(Host4,Lp1,Lp2)
- <= -0
- localcheck1(Host4,Lp1,Dac): - a(Host4,Lp1) + locals(Host4,Lp1,Dac)
- <= -0
- localcheck1(Host4,Lp2,Dac): - a(Host4,Lp2) + locals(Host4,Lp2,Dac)
- <= -0
- localcheck2(Host1,Adc,Lp1): - a(Host1,Lp1) + locals(Host1,Adc,Lp1)
- <= -0
- localcheck2(Host1,Fm1,Lp1): - a(Host1,Lp1) + locals(Host1,Fm1,Lp1)
- <= -0
- localcheck2(Host1,Fm1,Dac): - a(Host1,Dac) + locals(Host1,Fm1,Dac)
- <= -0
- localcheck2(Host1,Lp1,Lp2): - a(Host1,Lp2) + locals(Host1,Lp1,Lp2)
- <= -0
- localcheck2(Host1,Lp1,Dac): - a(Host1,Dac) + locals(Host1,Lp1,Dac)
- <= -0
- localcheck2(Host1,Lp2,Dac): - a(Host1,Dac) + locals(Host1,Lp2,Dac)
- <= -0
- localcheck2(Host2,Adc,Lp1): - a(Host2,Lp1) + locals(Host2,Adc,Lp1)
- <= -0
- localcheck2(Host2,Fm1,Lp1): - a(Host2,Lp1) + locals(Host2,Fm1,Lp1)
- <= -0
- localcheck2(Host2,Fm1,Dac): - a(Host2,Dac) + locals(Host2,Fm1,Dac)
- <= -0
- localcheck2(Host2,Lp1,Lp2): - a(Host2,Lp2) + locals(Host2,Lp1,Lp2)
- <= -0
- localcheck2(Host2,Lp1,Dac): - a(Host2,Dac) + locals(Host2,Lp1,Dac)
- <= -0
- localcheck2(Host2,Lp2,Dac): - a(Host2,Dac) + locals(Host2,Lp2,Dac)
- <= -0
- localcheck2(Host3,Adc,Lp1): - a(Host3,Lp1) + locals(Host3,Adc,Lp1)
- <= -0
- localcheck2(Host3,Fm1,Lp1): - a(Host3,Lp1) + locals(Host3,Fm1,Lp1)
- <= -0
- localcheck2(Host3,Fm1,Dac): - a(Host3,Dac) + locals(Host3,Fm1,Dac)
- <= -0
- localcheck2(Host3,Lp1,Lp2): - a(Host3,Lp2) + locals(Host3,Lp1,Lp2)
- <= -0
- localcheck2(Host3,Lp1,Dac): - a(Host3,Dac) + locals(Host3,Lp1,Dac)
- <= -0
- localcheck2(Host3,Lp2,Dac): - a(Host3,Dac) + locals(Host3,Lp2,Dac)
- <= -0
- localcheck2(Host4,Adc,Lp1): - a(Host4,Lp1) + locals(Host4,Adc,Lp1)
- <= -0
- localcheck2(Host4,Fm1,Lp1): - a(Host4,Lp1) + locals(Host4,Fm1,Lp1)
- <= -0
- localcheck2(Host4,Fm1,Dac): - a(Host4,Dac) + locals(Host4,Fm1,Dac)
- <= -0
- localcheck2(Host4,Lp1,Lp2): - a(Host4,Lp2) + locals(Host4,Lp1,Lp2)
- <= -0
- localcheck2(Host4,Lp1,Dac): - a(Host4,Dac) + locals(Host4,Lp1,Dac)
- <= -0
- localcheck2(Host4,Lp2,Dac): - a(Host4,Dac) + locals(Host4,Lp2,Dac)
- <= -0
+ assign(Synth_adc): + a(Host_Host_Big,Synth_adc)
+ + a(Host_Host_One,Synth_adc) + a(Host_Host_Two,Synth_adc)
+ + a(Host_Host_Three,Synth_adc) + a(Host_Host_Four,Synth_adc) = 1
+ assign(Synth_fm_1): + a(Host_Host_Big,Synth_fm_1)
+ + a(Host_Host_One,Synth_fm_1) + a(Host_Host_Two,Synth_fm_1)
+ + a(Host_Host_Three,Synth_fm_1) + a(Host_Host_Four,Synth_fm_1) = 1
+ assign(Synth_lp_1): + a(Host_Host_Big,Synth_lp_1)
+ + a(Host_Host_One,Synth_lp_1) + a(Host_Host_Two,Synth_lp_1)
+ + a(Host_Host_Three,Synth_lp_1) + a(Host_Host_Four,Synth_lp_1) = 1
+ assign(Synth_lp_2): + a(Host_Host_Big,Synth_lp_2)
+ + a(Host_Host_One,Synth_lp_2) + a(Host_Host_Two,Synth_lp_2)
+ + a(Host_Host_Three,Synth_lp_2) + a(Host_Host_Four,Synth_lp_2) = 1
+ assign(Synth_dac): + a(Host_Host_Big,Synth_dac)
+ + a(Host_Host_One,Synth_dac) + a(Host_Host_Two,Synth_dac)
+ + a(Host_Host_Three,Synth_dac) + a(Host_Host_Four,Synth_dac) = 1
+ corecheck2(Host_Host_Big): + overflow(Host_Host_Big) >= -0
+ corecheck2(Host_Host_One): + overflow(Host_Host_One) >= -0
+ corecheck2(Host_Host_Two): + overflow(Host_Host_Two) >= -0
+ corecheck2(Host_Host_Three): + overflow(Host_Host_Three) >= -0
+ corecheck2(Host_Host_Four): + overflow(Host_Host_Four) >= -0
+ corecheck3(Host_Host_Big): - a(Host_Host_Big,Synth_adc)
+ - a(Host_Host_Big,Synth_fm_1) - a(Host_Host_Big,Synth_lp_1)
+ - a(Host_Host_Big,Synth_lp_2) - a(Host_Host_Big,Synth_dac)
+ + overflow(Host_Host_Big) >= -2
+ corecheck3(Host_Host_One): - a(Host_Host_One,Synth_adc)
+ - a(Host_Host_One,Synth_fm_1) - a(Host_Host_One,Synth_lp_1)
+ - a(Host_Host_One,Synth_lp_2) - a(Host_Host_One,Synth_dac)
+ + overflow(Host_Host_One) >= -1
+ corecheck3(Host_Host_Two): - a(Host_Host_Two,Synth_adc)
+ - a(Host_Host_Two,Synth_fm_1) - a(Host_Host_Two,Synth_lp_1)
+ - a(Host_Host_Two,Synth_lp_2) - a(Host_Host_Two,Synth_dac)
+ + overflow(Host_Host_Two) >= -1
+ corecheck3(Host_Host_Three): - a(Host_Host_Three,Synth_adc)
+ - a(Host_Host_Three,Synth_fm_1) - a(Host_Host_Three,Synth_lp_1)
+ - a(Host_Host_Three,Synth_lp_2) - a(Host_Host_Three,Synth_dac)
+ + overflow(Host_Host_Three) >= -1
+ corecheck3(Host_Host_Four): - a(Host_Host_Four,Synth_adc)
+ - a(Host_Host_Four,Synth_fm_1) - a(Host_Host_Four,Synth_lp_1)
+ - a(Host_Host_Four,Synth_lp_2) - a(Host_Host_Four,Synth_dac)
+ + overflow(Host_Host_Four) >= -1
+ localcheck1(Host_Host_Big,Synth_adc,Synth_lp_1):
+ - a(Host_Host_Big,Synth_adc)
+ + locals(Host_Host_Big,Synth_adc,Synth_lp_1) <= -0
+ localcheck1(Host_Host_Big,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_Big,Synth_fm_1)
+ + locals(Host_Host_Big,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck1(Host_Host_Big,Synth_fm_1,Synth_dac):
+ - a(Host_Host_Big,Synth_fm_1)
+ + locals(Host_Host_Big,Synth_fm_1,Synth_dac) <= -0
+ localcheck1(Host_Host_Big,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_Big,Synth_lp_1)
+ + locals(Host_Host_Big,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck1(Host_Host_Big,Synth_lp_1,Synth_dac):
+ - a(Host_Host_Big,Synth_lp_1)
+ + locals(Host_Host_Big,Synth_lp_1,Synth_dac) <= -0
+ localcheck1(Host_Host_Big,Synth_lp_2,Synth_dac):
+ - a(Host_Host_Big,Synth_lp_2)
+ + locals(Host_Host_Big,Synth_lp_2,Synth_dac) <= -0
+ localcheck1(Host_Host_One,Synth_adc,Synth_lp_1):
+ - a(Host_Host_One,Synth_adc)
+ + locals(Host_Host_One,Synth_adc,Synth_lp_1) <= -0
+ localcheck1(Host_Host_One,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_One,Synth_fm_1)
+ + locals(Host_Host_One,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck1(Host_Host_One,Synth_fm_1,Synth_dac):
+ - a(Host_Host_One,Synth_fm_1)
+ + locals(Host_Host_One,Synth_fm_1,Synth_dac) <= -0
+ localcheck1(Host_Host_One,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_One,Synth_lp_1)
+ + locals(Host_Host_One,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck1(Host_Host_One,Synth_lp_1,Synth_dac):
+ - a(Host_Host_One,Synth_lp_1)
+ + locals(Host_Host_One,Synth_lp_1,Synth_dac) <= -0
+ localcheck1(Host_Host_One,Synth_lp_2,Synth_dac):
+ - a(Host_Host_One,Synth_lp_2)
+ + locals(Host_Host_One,Synth_lp_2,Synth_dac) <= -0
+ localcheck1(Host_Host_Two,Synth_adc,Synth_lp_1):
+ - a(Host_Host_Two,Synth_adc)
+ + locals(Host_Host_Two,Synth_adc,Synth_lp_1) <= -0
+ localcheck1(Host_Host_Two,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_Two,Synth_fm_1)
+ + locals(Host_Host_Two,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck1(Host_Host_Two,Synth_fm_1,Synth_dac):
+ - a(Host_Host_Two,Synth_fm_1)
+ + locals(Host_Host_Two,Synth_fm_1,Synth_dac) <= -0
+ localcheck1(Host_Host_Two,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_Two,Synth_lp_1)
+ + locals(Host_Host_Two,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck1(Host_Host_Two,Synth_lp_1,Synth_dac):
+ - a(Host_Host_Two,Synth_lp_1)
+ + locals(Host_Host_Two,Synth_lp_1,Synth_dac) <= -0
+ localcheck1(Host_Host_Two,Synth_lp_2,Synth_dac):
+ - a(Host_Host_Two,Synth_lp_2)
+ + locals(Host_Host_Two,Synth_lp_2,Synth_dac) <= -0
+ localcheck1(Host_Host_Three,Synth_adc,Synth_lp_1):
+ - a(Host_Host_Three,Synth_adc)
+ + locals(Host_Host_Three,Synth_adc,Synth_lp_1) <= -0
+ localcheck1(Host_Host_Three,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_Three,Synth_fm_1)
+ + locals(Host_Host_Three,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck1(Host_Host_Three,Synth_fm_1,Synth_dac):
+ - a(Host_Host_Three,Synth_fm_1)
+ + locals(Host_Host_Three,Synth_fm_1,Synth_dac) <= -0
+ localcheck1(Host_Host_Three,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_Three,Synth_lp_1)
+ + locals(Host_Host_Three,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck1(Host_Host_Three,Synth_lp_1,Synth_dac):
+ - a(Host_Host_Three,Synth_lp_1)
+ + locals(Host_Host_Three,Synth_lp_1,Synth_dac) <= -0
+ localcheck1(Host_Host_Three,Synth_lp_2,Synth_dac):
+ - a(Host_Host_Three,Synth_lp_2)
+ + locals(Host_Host_Three,Synth_lp_2,Synth_dac) <= -0
+ localcheck1(Host_Host_Four,Synth_adc,Synth_lp_1):
+ - a(Host_Host_Four,Synth_adc)
+ + locals(Host_Host_Four,Synth_adc,Synth_lp_1) <= -0
+ localcheck1(Host_Host_Four,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_Four,Synth_fm_1)
+ + locals(Host_Host_Four,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck1(Host_Host_Four,Synth_fm_1,Synth_dac):
+ - a(Host_Host_Four,Synth_fm_1)
+ + locals(Host_Host_Four,Synth_fm_1,Synth_dac) <= -0
+ localcheck1(Host_Host_Four,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_Four,Synth_lp_1)
+ + locals(Host_Host_Four,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck1(Host_Host_Four,Synth_lp_1,Synth_dac):
+ - a(Host_Host_Four,Synth_lp_1)
+ + locals(Host_Host_Four,Synth_lp_1,Synth_dac) <= -0
+ localcheck1(Host_Host_Four,Synth_lp_2,Synth_dac):
+ - a(Host_Host_Four,Synth_lp_2)
+ + locals(Host_Host_Four,Synth_lp_2,Synth_dac) <= -0
+ localcheck2(Host_Host_Big,Synth_adc,Synth_lp_1):
+ - a(Host_Host_Big,Synth_lp_1)
+ + locals(Host_Host_Big,Synth_adc,Synth_lp_1) <= -0
+ localcheck2(Host_Host_Big,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_Big,Synth_lp_1)
+ + locals(Host_Host_Big,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck2(Host_Host_Big,Synth_fm_1,Synth_dac):
+ - a(Host_Host_Big,Synth_dac)
+ + locals(Host_Host_Big,Synth_fm_1,Synth_dac) <= -0
+ localcheck2(Host_Host_Big,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_Big,Synth_lp_2)
+ + locals(Host_Host_Big,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck2(Host_Host_Big,Synth_lp_1,Synth_dac):
+ - a(Host_Host_Big,Synth_dac)
+ + locals(Host_Host_Big,Synth_lp_1,Synth_dac) <= -0
+ localcheck2(Host_Host_Big,Synth_lp_2,Synth_dac):
+ - a(Host_Host_Big,Synth_dac)
+ + locals(Host_Host_Big,Synth_lp_2,Synth_dac) <= -0
+ localcheck2(Host_Host_One,Synth_adc,Synth_lp_1):
+ - a(Host_Host_One,Synth_lp_1)
+ + locals(Host_Host_One,Synth_adc,Synth_lp_1) <= -0
+ localcheck2(Host_Host_One,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_One,Synth_lp_1)
+ + locals(Host_Host_One,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck2(Host_Host_One,Synth_fm_1,Synth_dac):
+ - a(Host_Host_One,Synth_dac)
+ + locals(Host_Host_One,Synth_fm_1,Synth_dac) <= -0
+ localcheck2(Host_Host_One,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_One,Synth_lp_2)
+ + locals(Host_Host_One,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck2(Host_Host_One,Synth_lp_1,Synth_dac):
+ - a(Host_Host_One,Synth_dac)
+ + locals(Host_Host_One,Synth_lp_1,Synth_dac) <= -0
+ localcheck2(Host_Host_One,Synth_lp_2,Synth_dac):
+ - a(Host_Host_One,Synth_dac)
+ + locals(Host_Host_One,Synth_lp_2,Synth_dac) <= -0
+ localcheck2(Host_Host_Two,Synth_adc,Synth_lp_1):
+ - a(Host_Host_Two,Synth_lp_1)
+ + locals(Host_Host_Two,Synth_adc,Synth_lp_1) <= -0
+ localcheck2(Host_Host_Two,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_Two,Synth_lp_1)
+ + locals(Host_Host_Two,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck2(Host_Host_Two,Synth_fm_1,Synth_dac):
+ - a(Host_Host_Two,Synth_dac)
+ + locals(Host_Host_Two,Synth_fm_1,Synth_dac) <= -0
+ localcheck2(Host_Host_Two,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_Two,Synth_lp_2)
+ + locals(Host_Host_Two,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck2(Host_Host_Two,Synth_lp_1,Synth_dac):
+ - a(Host_Host_Two,Synth_dac)
+ + locals(Host_Host_Two,Synth_lp_1,Synth_dac) <= -0
+ localcheck2(Host_Host_Two,Synth_lp_2,Synth_dac):
+ - a(Host_Host_Two,Synth_dac)
+ + locals(Host_Host_Two,Synth_lp_2,Synth_dac) <= -0
+ localcheck2(Host_Host_Three,Synth_adc,Synth_lp_1):
+ - a(Host_Host_Three,Synth_lp_1)
+ + locals(Host_Host_Three,Synth_adc,Synth_lp_1) <= -0
+ localcheck2(Host_Host_Three,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_Three,Synth_lp_1)
+ + locals(Host_Host_Three,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck2(Host_Host_Three,Synth_fm_1,Synth_dac):
+ - a(Host_Host_Three,Synth_dac)
+ + locals(Host_Host_Three,Synth_fm_1,Synth_dac) <= -0
+ localcheck2(Host_Host_Three,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_Three,Synth_lp_2)
+ + locals(Host_Host_Three,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck2(Host_Host_Three,Synth_lp_1,Synth_dac):
+ - a(Host_Host_Three,Synth_dac)
+ + locals(Host_Host_Three,Synth_lp_1,Synth_dac) <= -0
+ localcheck2(Host_Host_Three,Synth_lp_2,Synth_dac):
+ - a(Host_Host_Three,Synth_dac)
+ + locals(Host_Host_Three,Synth_lp_2,Synth_dac) <= -0
+ localcheck2(Host_Host_Four,Synth_adc,Synth_lp_1):
+ - a(Host_Host_Four,Synth_lp_1)
+ + locals(Host_Host_Four,Synth_adc,Synth_lp_1) <= -0
+ localcheck2(Host_Host_Four,Synth_fm_1,Synth_lp_1):
+ - a(Host_Host_Four,Synth_lp_1)
+ + locals(Host_Host_Four,Synth_fm_1,Synth_lp_1) <= -0
+ localcheck2(Host_Host_Four,Synth_fm_1,Synth_dac):
+ - a(Host_Host_Four,Synth_dac)
+ + locals(Host_Host_Four,Synth_fm_1,Synth_dac) <= -0
+ localcheck2(Host_Host_Four,Synth_lp_1,Synth_lp_2):
+ - a(Host_Host_Four,Synth_lp_2)
+ + locals(Host_Host_Four,Synth_lp_1,Synth_lp_2) <= -0
+ localcheck2(Host_Host_Four,Synth_lp_1,Synth_dac):
+ - a(Host_Host_Four,Synth_dac)
+ + locals(Host_Host_Four,Synth_lp_1,Synth_dac) <= -0
+ localcheck2(Host_Host_Four,Synth_lp_2,Synth_dac):
+ - a(Host_Host_Four,Synth_dac)
+ + locals(Host_Host_Four,Synth_lp_2,Synth_dac) <= -0
 
 Bounds
- 0 <= locals(Host1,Adc,Lp1) <= 1
- 0 <= locals(Host1,Fm1,Lp1) <= 1
- 0 <= locals(Host1,Fm1,Dac) <= 1
- 0 <= locals(Host1,Lp1,Lp2) <= 1
- 0 <= locals(Host1,Lp1,Dac) <= 1
- 0 <= locals(Host1,Lp2,Dac) <= 1
- 0 <= locals(Host2,Adc,Lp1) <= 1
- 0 <= locals(Host2,Fm1,Lp1) <= 1
- 0 <= locals(Host2,Fm1,Dac) <= 1
- 0 <= locals(Host2,Lp1,Lp2) <= 1
- 0 <= locals(Host2,Lp1,Dac) <= 1
- 0 <= locals(Host2,Lp2,Dac) <= 1
- 0 <= locals(Host3,Adc,Lp1) <= 1
- 0 <= locals(Host3,Fm1,Lp1) <= 1
- 0 <= locals(Host3,Fm1,Dac) <= 1
- 0 <= locals(Host3,Lp1,Lp2) <= 1
- 0 <= locals(Host3,Lp1,Dac) <= 1
- 0 <= locals(Host3,Lp2,Dac) <= 1
- 0 <= locals(Host4,Adc,Lp1) <= 1
- 0 <= locals(Host4,Fm1,Lp1) <= 1
- 0 <= locals(Host4,Fm1,Dac) <= 1
- 0 <= locals(Host4,Lp1,Lp2) <= 1
- 0 <= locals(Host4,Lp1,Dac) <= 1
- 0 <= locals(Host4,Lp2,Dac) <= 1
+ 0 <= locals(Host_Host_Big,Synth_adc,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_Big,Synth_fm_1,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_Big,Synth_fm_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Big,Synth_lp_1,Synth_lp_2) <= 1
+ 0 <= locals(Host_Host_Big,Synth_lp_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Big,Synth_lp_2,Synth_dac) <= 1
+ 0 <= locals(Host_Host_One,Synth_adc,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_One,Synth_fm_1,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_One,Synth_fm_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_One,Synth_lp_1,Synth_lp_2) <= 1
+ 0 <= locals(Host_Host_One,Synth_lp_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_One,Synth_lp_2,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Two,Synth_adc,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_Two,Synth_fm_1,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_Two,Synth_fm_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Two,Synth_lp_1,Synth_lp_2) <= 1
+ 0 <= locals(Host_Host_Two,Synth_lp_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Two,Synth_lp_2,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Three,Synth_adc,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_Three,Synth_fm_1,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_Three,Synth_fm_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Three,Synth_lp_1,Synth_lp_2) <= 1
+ 0 <= locals(Host_Host_Three,Synth_lp_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Three,Synth_lp_2,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Four,Synth_adc,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_Four,Synth_fm_1,Synth_lp_1) <= 1
+ 0 <= locals(Host_Host_Four,Synth_fm_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Four,Synth_lp_1,Synth_lp_2) <= 1
+ 0 <= locals(Host_Host_Four,Synth_lp_1,Synth_dac) <= 1
+ 0 <= locals(Host_Host_Four,Synth_lp_2,Synth_dac) <= 1
 
 Generals
- locals(Host1,Adc,Lp1)
- locals(Host1,Fm1,Lp1)
- locals(Host1,Fm1,Dac)
- locals(Host1,Lp1,Lp2)
- locals(Host1,Lp1,Dac)
- locals(Host1,Lp2,Dac)
- locals(Host2,Adc,Lp1)
- locals(Host2,Fm1,Lp1)
- locals(Host2,Fm1,Dac)
- locals(Host2,Lp1,Lp2)
- locals(Host2,Lp1,Dac)
- locals(Host2,Lp2,Dac)
- locals(Host3,Adc,Lp1)
- locals(Host3,Fm1,Lp1)
- locals(Host3,Fm1,Dac)
- locals(Host3,Lp1,Lp2)
- locals(Host3,Lp1,Dac)
- locals(Host3,Lp2,Dac)
- locals(Host4,Adc,Lp1)
- locals(Host4,Fm1,Lp1)
- locals(Host4,Fm1,Dac)
- locals(Host4,Lp1,Lp2)
- locals(Host4,Lp1,Dac)
- locals(Host4,Lp2,Dac)
+ locals(Host_Host_Big,Synth_adc,Synth_lp_1)
+ locals(Host_Host_Big,Synth_fm_1,Synth_lp_1)
+ locals(Host_Host_Big,Synth_fm_1,Synth_dac)
+ locals(Host_Host_Big,Synth_lp_1,Synth_lp_2)
+ locals(Host_Host_Big,Synth_lp_1,Synth_dac)
+ locals(Host_Host_Big,Synth_lp_2,Synth_dac)
+ locals(Host_Host_One,Synth_adc,Synth_lp_1)
+ locals(Host_Host_One,Synth_fm_1,Synth_lp_1)
+ locals(Host_Host_One,Synth_fm_1,Synth_dac)
+ locals(Host_Host_One,Synth_lp_1,Synth_lp_2)
+ locals(Host_Host_One,Synth_lp_1,Synth_dac)
+ locals(Host_Host_One,Synth_lp_2,Synth_dac)
+ locals(Host_Host_Two,Synth_adc,Synth_lp_1)
+ locals(Host_Host_Two,Synth_fm_1,Synth_lp_1)
+ locals(Host_Host_Two,Synth_fm_1,Synth_dac)
+ locals(Host_Host_Two,Synth_lp_1,Synth_lp_2)
+ locals(Host_Host_Two,Synth_lp_1,Synth_dac)
+ locals(Host_Host_Two,Synth_lp_2,Synth_dac)
+ locals(Host_Host_Three,Synth_adc,Synth_lp_1)
+ locals(Host_Host_Three,Synth_fm_1,Synth_lp_1)
+ locals(Host_Host_Three,Synth_fm_1,Synth_dac)
+ locals(Host_Host_Three,Synth_lp_1,Synth_lp_2)
+ locals(Host_Host_Three,Synth_lp_1,Synth_dac)
+ locals(Host_Host_Three,Synth_lp_2,Synth_dac)
+ locals(Host_Host_Four,Synth_adc,Synth_lp_1)
+ locals(Host_Host_Four,Synth_fm_1,Synth_lp_1)
+ locals(Host_Host_Four,Synth_fm_1,Synth_dac)
+ locals(Host_Host_Four,Synth_lp_1,Synth_lp_2)
+ locals(Host_Host_Four,Synth_lp_1,Synth_dac)
+ locals(Host_Host_Four,Synth_lp_2,Synth_dac)
 
 End
