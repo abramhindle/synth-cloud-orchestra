@@ -22,7 +22,7 @@ cols[2].set_bounds(Rglpk::GLP_LO, 0.0, 0.0)
 
 p.obj.coefs = [10, 6, 4]
 
-p.set_matrix([
+p.set_matrix([:5
  1, 1, 1,
 10, 4, 5,
  2, 2, 6
